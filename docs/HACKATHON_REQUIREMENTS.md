@@ -125,7 +125,7 @@ Wajib dipenuhi agar tidak gagal administratif/teknis:
 | Kriteria juri | Kekuatan Ramai | Bukti untuk ditunjukkan |
 |---|---|---|
 | Innovation / originality | Komitmen + reputasi kehadiran on-chain portabel; matching explainable | Diferensiasi vs Luma/Meetup/Partiful |
-| Technical execution | Kontrak teruji + integrasi AI + embedded wallet | Foundry tests hijau, tx on-chain live |
+| Technical execution | Kontrak teruji + integrasi AI + embedded wallet | Hardhat tests hijau, tx on-chain live |
 | Impact potential | No-show adalah pembunuh event komunitas nyata di Indonesia | Naskah demo, problem statement |
 | Business viability | Organizer premium / promotion (tanpa tokenomics paksa) | [PRODUCT_SPEC — Business Model](./PRODUCT_SPEC.md#business-model-tidak-dipaksakan) |
 | UX | Seamless: login email, tanpa gas/seed phrase | Demo alur peserta |

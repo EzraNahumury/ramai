@@ -78,7 +78,7 @@ flowchart TD
 | DB | Postgres/Supabase + pgvector | Relasional + vektor embedding di satu tempat, hosting mudah |
 | AI | LLM + model embedding | Creation + matching + alasan |
 | Chain client | viem + wagmi | Type-safe, integrasi wallet & React hooks |
-| Kontrak | Solidity + Foundry | Test cepat, deploy skrip terkontrol |
+| Kontrak | Solidity + Hardhat | Test cepat, deploy skrip terkontrol |
 | Chain | BNB Smart Chain Testnet (opBNB opsional) | Fee rendah untuk micro-stake, tooling EVM |
 | Indexer | Skrip pemantau event (viem `watchEvent`) atau layanan indexer | Sinkron state on-chain ke DB |
 

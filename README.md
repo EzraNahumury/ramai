@@ -64,7 +64,7 @@ Sisanya — profil, minat, index pencarian, embedding AI, media event — tetap 
 ## Kenapa BNB Chain?
 
 - **Fee rendah bikin micro-stake masuk akal.** Stake RSVP kecil yang refundable hanya jalan sebagai produk consumer kalau biaya transaksi mendekati nol. BNB Smart Chain (dan opBNB yang lebih murah) menjaga ekonomi stake + check-in tetap sehat.
-- **Tooling EVM matang** (Foundry, viem/wagmi, SDK embedded wallet) → lapisan on-chain kecil dan bisa diaudit dalam waktu hackathon.
+- **Tooling EVM matang** (Hardhat, viem/wagmi, SDK embedded wallet) → lapisan on-chain kecil dan bisa diaudit dalam waktu hackathon.
 - **Finalitas cepat** supaya check-in terkonfirmasi saat event berlangsung, bukan setelahnya.
 
 > ✅ **Terkonfirmasi:** aturan resmi mengizinkan deploy di BNB Smart Chain **atau opBNB, mainnet ATAU testnet**. Blueprint menargetkan **BSC Testnet** untuk demo.
@@ -157,71 +157,76 @@ Dua kontrak ramping (sengaja minimal agar bisa diaudit dalam scope hackathon). D
 | Database | Postgres / Supabase + `pgvector` | Data relasional + embedding minat/event dalam satu tempat |
 | AI | LLM (bikin event + matching) + embeddings | AI fungsional nyata, bukan chatbot |
 | Chain | BNB Smart Chain (Testnet untuk demo; opBNB opsional) | Fee rendah untuk micro-stake; tooling EVM |
-| Kontrak | Solidity + Foundry | Loop test + deploy cepat |
+| Kontrak | Solidity + Hardhat | Loop test + deploy cepat |
 | Chain client | viem + wagmi | Baca/tulis type-safe, integrasi wallet |
 
 Sengaja **tidak** dipakai: token custom, DAO, NFT marketplace, multi-chain, chat/social feed on-chain. Lihat [Batasan yang Diketahui](#batasan-yang-diketahui).
 
 ## Memulai (Getting Started)
 
-> Tahap blueprint — perintah di bawah adalah layout yang dituju, belum semua tersambung.
+Monorepo:
+
+```
+ramai/
+├── contracts/   Hardhat: kontrak Solidity + test + skrip deploy
+├── web/         Next.js app (frontend + API routes + AI)
+└── docs/        blueprint & dokumen submission
+```
 
 ### Prasyarat
-- Node.js 20+
-- pnpm
-- Foundry (`forge`, `cast`)
-- RPC BNB Smart Chain Testnet + wallet test terisi ([faucet tBNB](https://www.bnbchain.org/en/testnet-faucet))
+- Node.js 20+ dan pnpm
+- Wallet test + tBNB ([faucet](https://www.bnbchain.org/en/testnet-faucet))
+- Akun: [Privy](https://dashboard.privy.io) (login), [Supabase](https://supabase.com) (metadata), OpenAI API key (AI)
 
-### Environment Variables
-
-Buat `.env.local`:
-
-```bash
-# Frontend / backend
-DATABASE_URL=postgres://...
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-
-# Embedded wallet
-NEXT_PUBLIC_WALLET_APP_ID=...
-
-# Chain
-NEXT_PUBLIC_CHAIN_ID=97            # BSC Testnet
-BSC_TESTNET_RPC_URL=https://data-seed-prebsc-1-s1.bnbchain.org:8545
-DEPLOYER_PRIVATE_KEY=...           # deploy saja, jangan commit
-NEXT_PUBLIC_RAMAI_EVENTS_ADDRESS=
-NEXT_PUBLIC_RAMAI_REPUTATION_ADDRESS=
-
-# AI
-LLM_API_KEY=...
-EMBEDDINGS_API_KEY=...
-```
-
-### Development Lokal
-
-```bash
-pnpm install
-pnpm db:migrate
-pnpm dev
-```
-
-### Deploy Smart Contract
+### 1. Smart contracts
 
 ```bash
 cd contracts
-forge build
-forge test
-forge script script/Deploy.s.sol \
-  --rpc-url $BSC_TESTNET_RPC_URL \
-  --private-key $DEPLOYER_PRIVATE_KEY \
-  --broadcast
+pnpm install
+cp .env.example .env          # isi DEPLOYER_PRIVATE_KEY (wallet test)
+pnpm test                     # 25 tests
+pnpm deploy:testnet           # cetak alamat RamaiEvents + RamaiReputation
 ```
-Salin alamat hasil deploy ke `.env.local`.
+
+### 2. Database
+
+Buat project Supabase, lalu jalankan `web/supabase/schema.sql` di SQL editor.
+
+### 3. Web app
+
+```bash
+cd web
+pnpm install
+cp .env.local.example .env.local   # isi nilai di bawah
+pnpm dev
+```
+
+`web/.env.local`:
+
+```bash
+# Login (Privy)
+NEXT_PUBLIC_PRIVY_APP_ID=
+
+# Chain (BSC Testnet, chainId 97)
+NEXT_PUBLIC_BSC_TESTNET_RPC_URL=https://data-seed-prebsc-1-s1.bnbchain.org:8545
+NEXT_PUBLIC_RAMAI_EVENTS_ADDRESS=       # dari langkah 1
+NEXT_PUBLIC_RAMAI_REPUTATION_ADDRESS=   # dari langkah 1
+
+# Supabase (server-only)
+SUPABASE_URL=
+SUPABASE_SERVICE_ROLE_KEY=
+
+# AI (OpenAI-compatible; OpenAI sekarang, Ollama nanti via AI_BASE_URL)
+OPENAI_API_KEY=
+AI_BASE_URL=
+AI_MODEL=gpt-4o-mini
+```
 
 ### Testing
 
 ```bash
-forge test            # kontrak
-pnpm test             # app
+cd contracts && pnpm test     # kontrak (Hardhat)
+cd web && pnpm build          # typecheck + build app
 ```
 
 ## Demo
@@ -250,7 +255,7 @@ _Menyusul._
 ## Roadmap
 
 - **Fase 1** — Fondasi: skema, auth + embedded wallet, kerangka app
-- **Fase 2** — Kontrak: `RamaiEvents` + `RamaiReputation`, tes Foundry
+- **Fase 2** — Kontrak: `RamaiEvents` + `RamaiReputation`, tes Hardhat
 - **Fase 3** — Backend: CRUD event, indexer on-chain
 - **Fase 4** — AI: asisten bikin event, embeddings, matching yang bisa dijelaskan
 - **Fase 5** — Frontend: discovery, detail event, RSVP, dashboard organizer

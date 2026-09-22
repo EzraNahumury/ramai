@@ -1,8 +1,10 @@
 # Ramai — Smart Contract Specification
 
-Dua kontrak, sengaja ramping agar bisa diaudit dalam waktu hackathon. Target: BNB Smart Chain (Testnet untuk demo). Solidity + Foundry.
+Dua kontrak, sengaja ramping agar bisa diaudit dalam waktu hackathon. Target: BNB Smart Chain (Testnet untuk demo). Solidity + Hardhat.
 
 Prinsip: **on-chain hanya menyimpan state komitmen + kehadiran + reputasi minimal.** Tidak ada PII, deskripsi, atau media on-chain.
+
+> **Status implementasi (MVP):** kode aktual di `contracts/src/` menyederhanakan `checkIn` menjadi **dipanggil langsung organizer** (`msg.sender == organizer`) + varian `checkInBatch`, **tanpa** relay/signature — jadi param `sig`, `setRelay`, dan jalur relay di spec ini adalah rencana pasca-hackathon. `settleNoShows` menerima array `attendees`. Sisanya (struct, fungsi lain, event, keamanan) sesuai kode. 25 test hijau (`contracts/test/ramai.test.js`).
 
 ---
 
@@ -144,7 +146,7 @@ sequenceDiagram
 
 ---
 
-## Rencana Test (Foundry)
+## Rencana Test (Hardhat)
 
 - `createEvent`: validasi waktu, event tersimpan, log benar.
 - `joinEvent`: stake benar, tolak nilai salah, tolak setelah deadline, tolak kapasitas penuh, tolak double join.

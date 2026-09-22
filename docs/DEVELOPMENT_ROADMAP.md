@@ -31,7 +31,7 @@ flowchart LR
 |---|---|---|---|
 | `RamaiEvents` (create/join/cancel/checkIn/claim/settle) | F1 | L | Semua fungsi ada + event log |
 | `RamaiReputation` (recordAttendance/reputationOf) | F1 | M | Reputasi naik saat check-in |
-| Foundry tests (happy + edge + invarian) | atas | L | Test hijau; reentrancy & double-spend tertutup |
+| Hardhat tests (happy + edge + invarian) | atas | L | Test hijau; reentrancy & double-spend tertutup |
 | Deploy ke BSC Testnet | atas | S | Alamat tersimpan, verified |
 
 ## Fase 3 — Backend

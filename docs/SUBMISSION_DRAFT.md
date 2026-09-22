@@ -33,14 +33,14 @@ Blockchain tak terlihat: login email, embedded wallet otomatis, tanpa gas/seed p
 Ramai adalah platform event consumer di atas BNB Smart Chain. Dua primitif Web3 yang benar-benar butuh blockchain: (a) **escrow stake RSVP** — dana ditahan & dilepas oleh kontrak, bukan janji platform; (b) **reputasi kehadiran soulbound** — portabel, bisa diverifikasi, dimiliki user, bukan skor internal yang terkurung di satu perusahaan. Semua data kaya & privat (profil, minat, embedding AI, media event) tetap off-chain demi biaya, kecepatan, dan privasi. AI menjalankan dua fungsi nyata: menyusun event dari niat satu kalimat, dan me-ranking + menjelaskan rekomendasi (ranking deterministik, LLM hanya menjelaskan — tahan manipulasi). Arsitektur, skema kontrak, skema DB, dan audit keamanan ada di repo (`docs/`).
 
 ## Why Web3 / Why BNB Chain
-Hanya dua mekanisme yang butuh blockchain — escrow komitmen & reputasi portabel; sisanya sengaja off-chain. BNB Smart Chain / opBNB dipilih karena **fee rendah bikin micro-stake refundable masuk akal** sebagai produk consumer, tooling EVM matang (Foundry/viem/wagmi) sehingga lapisan on-chain kecil & auditable, dan finalitas cepat agar check-in terkonfirmasi saat event berlangsung.
+Hanya dua mekanisme yang butuh blockchain — escrow komitmen & reputasi portabel; sisanya sengaja off-chain. BNB Smart Chain / opBNB dipilih karena **fee rendah bikin micro-stake refundable masuk akal** sebagai produk consumer, tooling EVM matang (Hardhat/viem/wagmi) sehingga lapisan on-chain kecil & auditable, dan finalitas cepat agar check-in terkonfirmasi saat event berlangsung.
 
 ## Komponen AI
 - **Event Creation Assistant** — niat 1 kalimat → event terstruktur + copy (structured output).
 - **Explainable Matching** — embedding minat & event (pgvector), ranking deterministik (similarity × jadwal × reputasi), LLM hanya membuat alasan per rekomendasi. (AI tidak wajib di track Consumer Apps → ini nilai tambah.)
 
 ## Arsitektur Teknis (ringkas)
-Frontend Next.js/React/Tailwind (mobile-first) · embedded wallet (login email) · backend Next.js API + indexer on-chain + relay check-in · Postgres/Supabase + pgvector · LLM + embeddings · kontrak Solidity (`RamaiEvents`, `RamaiReputation`) di BSC Testnet via Foundry. Detail: `docs/TECHNICAL_ARCHITECTURE.md`.
+Frontend Next.js/React/Tailwind (mobile-first) · embedded wallet (login email) · backend Next.js API + indexer on-chain + relay check-in · Postgres/Supabase + pgvector · LLM + embeddings · kontrak Solidity (`RamaiEvents`, `RamaiReputation`) di BSC Testnet via Hardhat. Detail: `docs/TECHNICAL_ARCHITECTURE.md`.
 
 ## Key Features
 - Bikin event dari 1 kalimat (AI)
