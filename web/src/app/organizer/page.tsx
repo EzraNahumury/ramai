@@ -31,20 +31,20 @@ export default function OrganizerPage() {
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-10">
-      <h1 className="text-2xl font-semibold tracking-tight">Organizer dashboard</h1>
-      <p className="mt-1 text-sm text-zinc-500">Check in attendees and settle no-shows.</p>
+      <h1 className="font-display text-3xl font-extrabold tracking-tight">Organizer</h1>
+      <p className="mt-1 text-sm text-muted">Check in attendees and settle no-shows.</p>
 
       {!authenticated ? (
-        <button onClick={login} className="mt-6 rounded-full bg-indigo-600 px-5 py-2 text-sm font-medium text-white">
+        <button onClick={login} className="btn btn-primary btn-md mt-6">
           Sign in
         </button>
       ) : loading ? (
-        <p className="mt-8 text-sm text-zinc-500">Loading…</p>
+        <p className="mt-8 text-sm text-muted">Loading…</p>
       ) : events.length === 0 ? (
-        <div className="mt-8 rounded-2xl border border-dashed border-zinc-300 p-10 text-center dark:border-zinc-700">
-          <p className="font-medium">No events yet</p>
-          <Link href="/create" className="mt-2 inline-block text-sm text-indigo-600">
-            Create your first event →
+        <div className="mt-8 rounded-2xl border border-dashed border-line p-10 text-center">
+          <p className="font-display font-bold">No events yet</p>
+          <Link href="/create" className="mt-2 inline-block text-sm font-semibold text-accent">
+            Host your first event
           </Link>
         </div>
       ) : (
@@ -120,12 +120,12 @@ function OrganizerEventCard({ ev }: { ev: EventRow }) {
   };
 
   return (
-    <div className="rounded-2xl border border-zinc-200 p-5 dark:border-zinc-800">
+    <div className="card p-5">
       <div className="flex items-center justify-between">
-        <Link href={`/events/${ev.onchain_id}`} className="font-semibold hover:underline">
+        <Link href={`/events/${ev.onchain_id}`} className="font-display font-bold hover:text-accent">
           {ev.title}
         </Link>
-        <span className="text-xs text-zinc-500">
+        <span className="text-xs text-muted">
           {ev.stake_amount_wei && ev.stake_amount_wei !== "0"
             ? `${formatBNB(ev.stake_amount_wei)} tBNB`
             : "Free"}
@@ -137,9 +137,9 @@ function OrganizerEventCard({ ev }: { ev: EventRow }) {
           value={attendee}
           onChange={(e) => setAttendee(e.target.value)}
           placeholder="Attendee address 0x…"
-          className="flex-1 rounded-lg border border-zinc-300 bg-white px-3 py-2 font-mono text-xs outline-none focus:border-indigo-500 dark:border-zinc-700 dark:bg-zinc-950"
+          className="input flex-1 font-mono text-xs"
         />
-        <button onClick={checkIn} disabled={busy} className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-50">
+        <button onClick={checkIn} disabled={busy} className="btn btn-primary btn-md">
           Check in
         </button>
       </div>
@@ -149,15 +149,15 @@ function OrganizerEventCard({ ev }: { ev: EventRow }) {
           value={noShows}
           onChange={(e) => setNoShows(e.target.value)}
           placeholder="No-show addresses (comma separated)"
-          className="flex-1 rounded-lg border border-zinc-300 bg-white px-3 py-2 font-mono text-xs outline-none focus:border-indigo-500 dark:border-zinc-700 dark:bg-zinc-950"
+          className="input flex-1 font-mono text-xs"
         />
-        <button onClick={settle} disabled={busy} className="rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium hover:bg-zinc-100 disabled:opacity-50 dark:border-zinc-700 dark:hover:bg-zinc-900">
+        <button onClick={settle} disabled={busy} className="btn btn-ghost btn-md">
           Settle no-shows
         </button>
       </div>
 
-      {status && <p className="mt-2 text-sm text-indigo-600">{status}</p>}
-      {error && <p className="mt-2 break-words text-sm text-red-600">{error}</p>}
+      {status && <p className="mt-2 text-sm text-accent">{status}</p>}
+      {error && <p className="mt-2 break-words text-sm" style={{ color: "#d64545" }}>{error}</p>}
     </div>
   );
 }

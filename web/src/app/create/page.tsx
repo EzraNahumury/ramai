@@ -159,14 +159,14 @@ export default function CreateEventPage() {
 
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-10">
-      <h1 className="text-2xl font-semibold tracking-tight">Create an event</h1>
-      <p className="mt-1 text-sm text-zinc-500">
-        Details are stored off-chain; the commitment rules go on-chain.
+      <h1 className="font-display text-3xl font-extrabold tracking-tight">Host an event</h1>
+      <p className="mt-1 text-sm text-muted">
+        Details stay off-chain; only the commitment rules go on-chain.
       </p>
 
-      <div className="mt-6 rounded-2xl border border-indigo-200 bg-indigo-50/50 p-4 dark:border-indigo-900 dark:bg-indigo-950/20">
-        <label className="text-sm font-medium text-indigo-900 dark:text-indigo-200">
-          ✨ Describe it in one sentence — AI drafts the rest
+      <div className="mt-6 rounded-2xl border border-line bg-accent-soft p-4">
+        <label className="text-sm font-semibold" style={{ color: "var(--accent-press)" }}>
+          Describe it in one sentence — AI drafts the rest
         </label>
         <div className="mt-2 flex flex-col gap-2 sm:flex-row">
           <input
@@ -179,7 +179,7 @@ export default function CreateEventPage() {
             type="button"
             onClick={handleDraft}
             disabled={drafting}
-            className="whitespace-nowrap rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-50"
+            className="btn btn-primary btn-md whitespace-nowrap"
           >
             {drafting ? "Drafting…" : "Draft with AI"}
           </button>
@@ -218,14 +218,14 @@ export default function CreateEventPage() {
           </Field>
         </div>
 
-        {error && <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-950/40 dark:text-red-300">{error}</p>}
-        {status && <p className="rounded-lg bg-indigo-50 px-3 py-2 text-sm text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300">{status}</p>}
+        {error && (
+          <p className="rounded-lg border border-line px-3 py-2 text-sm" style={{ color: "#d64545" }}>
+            {error}
+          </p>
+        )}
+        {status && <p className="text-sm text-accent">{status}</p>}
 
-        <button
-          type="submit"
-          disabled={busy}
-          className="mt-2 h-12 rounded-full bg-indigo-600 px-6 text-base font-medium text-white transition-colors hover:bg-indigo-500 disabled:opacity-50"
-        >
+        <button type="submit" disabled={busy} className="btn btn-primary btn-lg mt-2">
           {authenticated ? (busy ? "Creating…" : "Create event") : "Sign in to create"}
         </button>
       </form>
@@ -233,13 +233,12 @@ export default function CreateEventPage() {
   );
 }
 
-const inputCls =
-  "w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm outline-none focus:border-indigo-500 dark:border-zinc-700 dark:bg-zinc-950";
+const inputCls = "input";
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="flex flex-col gap-1.5">
-      <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">{label}</span>
+      <span className="text-sm font-medium">{label}</span>
       {children}
     </label>
   );

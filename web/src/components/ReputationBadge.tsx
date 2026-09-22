@@ -24,9 +24,11 @@ export function ReputationBadge() {
   return (
     <span
       title={`${count} verified check-ins`}
-      className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700 dark:bg-amber-950/40 dark:text-amber-300"
+      className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold"
+      style={{ color: "var(--gold)", background: "color-mix(in srgb, var(--gold) 14%, transparent)" }}
     >
-      ★ {count}
+      <span aria-hidden>★</span>
+      {count}
     </span>
   );
 }

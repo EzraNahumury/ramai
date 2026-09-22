@@ -8,7 +8,7 @@ export function WalletButton() {
   const appConfigured = Boolean(process.env.NEXT_PUBLIC_PRIVY_APP_ID);
 
   if (!ready) {
-    return <span className="text-sm text-zinc-400">…</span>;
+    return <span className="text-sm text-muted">…</span>;
   }
 
   if (authenticated) {
@@ -16,19 +16,15 @@ export function WalletButton() {
       <button
         onClick={logout}
         title="Sign out"
-        className="rounded-full border border-zinc-300 px-3 py-1.5 font-mono text-xs transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-900"
+        className="btn btn-ghost btn-sm font-mono"
       >
-        {shortAddr(user?.wallet?.address) || "Signed in"} · sign out
+        {shortAddr(user?.wallet?.address) || "Account"}
       </button>
     );
   }
 
   return (
-    <button
-      onClick={login}
-      disabled={!appConfigured}
-      className="rounded-full bg-indigo-600 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-indigo-500 disabled:opacity-50"
-    >
+    <button onClick={login} disabled={!appConfigured} className="btn btn-primary btn-sm">
       Sign in
     </button>
   );

@@ -11,6 +11,7 @@ import {
   ramaiEventsAbi,
 } from "@/lib/contracts";
 import { formatBNB, formatDateTime, shortAddr } from "@/lib/format";
+import { AttendanceDots } from "@/components/AttendanceDots";
 
 type OnchainEvent = {
   organizer: string;
@@ -69,17 +70,17 @@ export default function EventDetailPage() {
   const ev = evData as OnchainEvent | undefined;
   const rsvp = rsvpData as OnchainRSVP | undefined;
 
-  async function runTx(fn: () => Promise<`0x${string}`>, pending: string) {
+  async function runTx(fn: () => Promise<`0x${string}`>, pending: string, done: string) {
     setError("");
     if (!authenticated) return login();
     try {
       setBusy(true);
       setStatus(pending);
       const hash = await fn();
-      setStatus("Waiting for confirmation…");
+      setStatus("Confirming on-chain…");
       await publicClient?.waitForTransactionReceipt({ hash });
       await Promise.all([refetchEvent(), refetchRsvp()]);
-      setStatus("Done ✓");
+      setStatus(done);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Transaction failed.");
       setStatus("");
@@ -98,7 +99,8 @@ export default function EventDetailPage() {
           args: [eventId],
           value: ev?.stakeAmount ?? 0n,
         }),
-      "Confirm to RSVP…"
+      "Reserving your spot…",
+      "You're in. See you there."
     );
 
   const cancel = () =>
@@ -110,7 +112,8 @@ export default function EventDetailPage() {
           functionName: "cancelRSVP",
           args: [eventId],
         }),
-      "Confirm to cancel…"
+      "Cancelling…",
+      "RSVP cancelled, stake returned."
     );
 
   const claim = () =>
@@ -122,60 +125,66 @@ export default function EventDetailPage() {
           functionName: "claimRefund",
           args: [eventId],
         }),
-      "Confirm to claim your stake…"
+      "Returning your stake…",
+      "Stake back in your wallet."
     );
 
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-10">
-      <h1 className="text-3xl font-semibold tracking-tight">
+      {meta?.category && <span className="chip">{meta.category}</span>}
+      <h1 className="mt-3 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
         {meta?.title ?? `Event #${params.id}`}
       </h1>
-      {meta?.category && <p className="mt-1 text-sm text-indigo-600">{meta.category}</p>}
       {meta?.description && (
-        <p className="mt-4 whitespace-pre-line text-zinc-700 dark:text-zinc-300">
-          {meta.description}
-        </p>
+        <p className="mt-4 whitespace-pre-line leading-7 text-muted">{meta.description}</p>
       )}
 
-      <dl className="mt-6 grid grid-cols-2 gap-4 rounded-2xl border border-zinc-200 p-5 text-sm dark:border-zinc-800">
-        <Info label="Location" value={meta?.location ?? "—"} />
-        <Info label="Starts" value={formatDateTime(ev?.startTime)} />
-        <Info label="Check-in deadline" value={formatDateTime(ev?.checkInDeadline)} />
-        <Info
-          label="Stake"
-          value={ev && ev.stakeAmount > 0n ? `${formatBNB(ev.stakeAmount)} tBNB` : "Free"}
-        />
-        <Info label="Organizer" value={shortAddr(ev?.organizer)} />
-        <Info
-          label="Joined"
-          value={ev ? `${ev.joinedCount}${ev.capacity ? ` / ${ev.capacity}` : ""}` : "—"}
-        />
-      </dl>
+      <div className="card mt-6 p-5">
+        <div className="grid grid-cols-2 gap-5 text-sm">
+          <Info label="Location" value={meta?.location ?? "—"} />
+          <Info label="Starts" value={formatDateTime(ev?.startTime)} />
+          <Info label="RSVP closes" value={formatDateTime(ev?.checkInDeadline)} />
+          <Info
+            label="Stake"
+            value={ev && ev.stakeAmount > 0n ? `${formatBNB(ev.stakeAmount)} tBNB` : "Free"}
+          />
+          <Info label="Host" value={shortAddr(ev?.organizer)} />
+          <div>
+            <dt className="text-xs text-muted">Guest list</dt>
+            <dd className="mt-1.5">
+              <AttendanceDots joined={ev?.joinedCount ?? 0} capacity={ev?.capacity ?? 0} />
+            </dd>
+          </div>
+        </div>
+      </div>
 
-      <div className="mt-6 rounded-2xl border border-zinc-200 p-5 dark:border-zinc-800">
+      <div className="card mt-5 p-5">
         {!contractsConfigured ? (
-          <p className="text-sm text-amber-600">
-            Contract address not set. Deploy and set NEXT_PUBLIC_RAMAI_EVENTS_ADDRESS.
+          <p className="text-sm text-accent">
+            Contracts not connected. Deploy and set NEXT_PUBLIC_RAMAI_EVENTS_ADDRESS.
           </p>
         ) : rsvp?.checkedIn ? (
           <div className="flex flex-col gap-3">
-            <p className="text-sm font-medium text-green-600">Attendance verified ✓</p>
+            <p className="flex items-center gap-2 text-sm font-semibold text-success">
+              <span className="dot dot-on" style={{ background: "var(--success)" }} />
+              Attendance verified · reputation earned
+            </p>
             {!rsvp.settled && ev && ev.stakeAmount > 0n && (
-              <button onClick={claim} disabled={busy} className={primaryBtn}>
-                Claim your stake back
+              <button onClick={claim} disabled={busy} className="btn btn-primary btn-lg w-full">
+                Get your stake back
               </button>
             )}
-            {rsvp.settled && <p className="text-sm text-zinc-500">Stake returned. Reputation +1.</p>}
+            {rsvp.settled && <p className="text-sm text-muted">Stake returned. ★ reputation +1.</p>}
           </div>
         ) : rsvp?.joined ? (
           <div className="flex flex-col gap-3">
-            <p className="text-sm font-medium text-indigo-600">You&apos;re on the guest list.</p>
-            <button onClick={cancel} disabled={busy} className={secondaryBtn}>
-              Cancel RSVP (refund stake)
+            <p className="text-sm font-semibold text-accent">You&apos;re on the guest list.</p>
+            <button onClick={cancel} disabled={busy} className="btn btn-ghost btn-md w-full">
+              Cancel RSVP · refund stake
             </button>
           </div>
         ) : (
-          <button onClick={join} disabled={busy} className={primaryBtn}>
+          <button onClick={join} disabled={busy} className="btn btn-primary btn-lg w-full">
             {authenticated
               ? ev && ev.stakeAmount > 0n
                 ? `RSVP · stake ${formatBNB(ev.stakeAmount)} tBNB`
@@ -184,23 +193,18 @@ export default function EventDetailPage() {
           </button>
         )}
 
-        {status && <p className="mt-3 text-sm text-indigo-600">{status}</p>}
-        {error && <p className="mt-3 break-words text-sm text-red-600">{error}</p>}
+        {status && <p className="mt-3 text-sm text-accent">{status}</p>}
+        {error && <p className="mt-3 break-words text-sm" style={{ color: "#d64545" }}>{error}</p>}
       </div>
     </main>
   );
 }
 
-const primaryBtn =
-  "h-12 w-full rounded-full bg-indigo-600 px-6 text-base font-medium text-white transition-colors hover:bg-indigo-500 disabled:opacity-50";
-const secondaryBtn =
-  "h-11 w-full rounded-full border border-zinc-300 px-6 text-sm font-medium transition-colors hover:bg-zinc-100 disabled:opacity-50 dark:border-zinc-700 dark:hover:bg-zinc-900";
-
 function Info({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className="text-xs uppercase tracking-wide text-zinc-400">{label}</dt>
-      <dd className="mt-0.5 font-medium">{value}</dd>
+      <dt className="text-xs text-muted">{label}</dt>
+      <dd className="mt-1 font-medium">{value}</dd>
     </div>
   );
 }
