@@ -33,8 +33,41 @@ export default function CreateEventPage() {
   const [status, setStatus] = useState<string>("");
   const [error, setError] = useState<string>("");
 
+  const [intent, setIntent] = useState("");
+  const [drafting, setDrafting] = useState(false);
+
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  async function handleDraft() {
+    setError("");
+    if (intent.trim().length < 4) {
+      setError("Describe your event in a sentence first.");
+      return;
+    }
+    try {
+      setDrafting(true);
+      const res = await fetch("/api/ai/draft", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ intent }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "AI request failed");
+      const d = data.draft;
+      setForm((f) => ({
+        ...f,
+        title: d.title || f.title,
+        description: d.description || f.description,
+        category: d.category || f.category,
+        location: d.location || f.location,
+      }));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "AI request failed.");
+    } finally {
+      setDrafting(false);
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -127,6 +160,28 @@ export default function CreateEventPage() {
       <p className="mt-1 text-sm text-zinc-500">
         Details are stored off-chain; the commitment rules go on-chain.
       </p>
+
+      <div className="mt-6 rounded-2xl border border-indigo-200 bg-indigo-50/50 p-4 dark:border-indigo-900 dark:bg-indigo-950/20">
+        <label className="text-sm font-medium text-indigo-900 dark:text-indigo-200">
+          ✨ Describe it in one sentence — AI drafts the rest
+        </label>
+        <div className="mt-2 flex flex-col gap-2 sm:flex-row">
+          <input
+            value={intent}
+            onChange={(e) => setIntent(e.target.value)}
+            placeholder="Casual 5-a-side football in Yogyakarta for beginners, Saturday evening"
+            className={inputCls}
+          />
+          <button
+            type="button"
+            onClick={handleDraft}
+            disabled={drafting}
+            className="whitespace-nowrap rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-50"
+          >
+            {drafting ? "Drafting…" : "Draft with AI"}
+          </button>
+        </div>
+      </div>
 
       <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
         <Field label="Title">
