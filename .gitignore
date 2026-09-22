@@ -14,10 +14,12 @@ out/
 dist/
 build/
 
-# Foundry
-contracts/out/
+# Hardhat
+contracts/artifacts/
 contracts/cache/
-contracts/broadcast/
+contracts/typechain-types/
+contracts/coverage/
+contracts/coverage.json
 
 # Logs
 *.log
