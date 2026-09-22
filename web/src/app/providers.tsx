@@ -6,6 +6,7 @@ import { WagmiProvider } from "@privy-io/wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { bscTestnet } from "viem/chains";
 import { wagmiConfig } from "@/lib/wagmi";
+import { Nav } from "@/components/Nav";
 
 const queryClient = new QueryClient();
 
@@ -44,7 +45,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
       }}
     >
       <QueryClientProvider client={queryClient}>
-        <WagmiProvider config={wagmiConfig}>{children}</WagmiProvider>
+        <WagmiProvider config={wagmiConfig}>
+          <Nav />
+          {children}
+        </WagmiProvider>
       </QueryClientProvider>
     </PrivyProvider>
   );

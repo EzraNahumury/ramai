@@ -1,8 +1,9 @@
+import type { Abi } from "viem";
 import RamaiEventsAbi from "@/abi/RamaiEvents.json";
 import RamaiReputationAbi from "@/abi/RamaiReputation.json";
 
-export const ramaiEventsAbi = RamaiEventsAbi;
-export const ramaiReputationAbi = RamaiReputationAbi;
+export const ramaiEventsAbi = RamaiEventsAbi as Abi;
+export const ramaiReputationAbi = RamaiReputationAbi as Abi;
 
 export const RAMAI_EVENTS_ADDRESS = (process.env.NEXT_PUBLIC_RAMAI_EVENTS_ADDRESS ??
   "") as `0x${string}`;
