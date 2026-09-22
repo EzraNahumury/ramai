@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { WalletButton } from "./WalletButton";
+import { ReputationBadge } from "./ReputationBadge";
 
 const links = [
   { href: "/events", label: "Discover" },
   { href: "/create", label: "Create" },
   { href: "/organizer", label: "Organizer" },
+  { href: "/profile", label: "Interests" },
 ];
 
 export function Nav() {
@@ -41,7 +43,10 @@ export function Nav() {
             })}
           </div>
         </div>
-        <WalletButton />
+        <div className="flex items-center gap-2">
+          <ReputationBadge />
+          <WalletButton />
+        </div>
       </nav>
     </header>
   );

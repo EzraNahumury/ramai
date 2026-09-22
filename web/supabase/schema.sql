@@ -12,8 +12,12 @@ create table if not exists events (
   checkin_deadline  timestamptz,
   stake_amount_wei  text,          -- string to preserve uint256 precision
   tx_hash           text,
+  tags              text[] not null default '{}',  -- AI audience tags, used by matching
   created_at        timestamptz not null default now()
 );
+
+-- If the events table already existed, add the tags column:
+alter table events add column if not exists tags text[] not null default '{}';
 
 create index if not exists events_organizer_idx on events (organizer);
 create index if not exists events_category_idx on events (category);

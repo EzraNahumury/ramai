@@ -31,5 +31,13 @@ export type EventRow = {
   checkin_deadline: string | null;
   stake_amount_wei: string | null;
   tx_hash: string | null;
+  tags?: string[];
+  created_at?: string;
+};
+
+export type ProfileRow = {
+  wallet: string;
+  display_name: string | null;
+  interests: string[];
   created_at?: string;
 };

@@ -35,6 +35,7 @@ export default function CreateEventPage() {
 
   const [intent, setIntent] = useState("");
   const [drafting, setDrafting] = useState(false);
+  const [tags, setTags] = useState<string[]>([]);
 
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
@@ -62,6 +63,7 @@ export default function CreateEventPage() {
         category: d.category || f.category,
         location: d.location || f.location,
       }));
+      if (Array.isArray(d.audience_tags)) setTags(d.audience_tags);
     } catch (err) {
       setError(err instanceof Error ? err.message : "AI request failed.");
     } finally {
@@ -142,6 +144,7 @@ export default function CreateEventPage() {
           checkin_deadline: new Date(deadlineUnix * 1000).toISOString(),
           stake_amount_wei: parseEther(form.stake || "0").toString(),
           tx_hash: hash,
+          tags,
         }),
       });
 

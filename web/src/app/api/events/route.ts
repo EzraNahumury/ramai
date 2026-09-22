@@ -49,6 +49,7 @@ export async function POST(req: Request) {
     checkin_deadline: body.checkin_deadline ?? null,
     stake_amount_wei: body.stake_amount_wei ?? null,
     tx_hash: body.tx_hash ?? null,
+    tags: Array.isArray(body.tags) ? body.tags : [],
   };
 
   const supabase = getSupabase();
