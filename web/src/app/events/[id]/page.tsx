@@ -12,6 +12,7 @@ import {
 } from "@/lib/contracts";
 import { formatBNB, formatDateTime, shortAddr } from "@/lib/format";
 import { AttendanceDots } from "@/components/AttendanceDots";
+import { EventChat } from "@/components/EventChat";
 
 type OnchainEvent = {
   organizer: string;
@@ -196,6 +197,8 @@ export default function EventDetailPage() {
         {status && <p className="mt-3 text-sm text-accent">{status}</p>}
         {error && <p className="mt-3 break-words text-sm" style={{ color: "#d64545" }}>{error}</p>}
       </div>
+
+      <EventChat eventId={params.id} />
     </main>
   );
 }
