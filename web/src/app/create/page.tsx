@@ -158,88 +158,117 @@ export default function CreateEventPage() {
   }
 
   return (
-    <main className="mx-auto w-full max-w-2xl px-4 py-10">
-      <h1 className="font-display text-3xl font-extrabold tracking-tight">Host an event</h1>
-      <p className="mt-1 text-sm text-muted">
-        Details stay off-chain; only the commitment rules go on-chain.
+    <main className="mx-auto w-full max-w-2xl px-4 py-12">
+      <h1 className="font-display text-4xl font-semibold tracking-tight">Host an event</h1>
+      <p className="mt-2 text-sm text-muted">
+        Details stay off-chain. Only the commitment rules go on-chain.
       </p>
 
-      <div className="mt-6 rounded-2xl border border-line bg-accent-soft p-4">
-        <label className="text-sm font-semibold" style={{ color: "var(--accent-press)" }}>
-          Describe it in one sentence — AI drafts the rest
-        </label>
-        <div className="mt-2 flex flex-col gap-2 sm:flex-row">
-          <input
-            value={intent}
-            onChange={(e) => setIntent(e.target.value)}
-            placeholder="Casual 5-a-side football in Yogyakarta for beginners, Saturday evening"
-            className={inputCls}
-          />
-          <button
-            type="button"
-            onClick={handleDraft}
-            disabled={drafting}
-            className="btn btn-primary btn-md whitespace-nowrap"
-          >
-            {drafting ? "Drafting…" : "Draft with AI"}
-          </button>
+      <form onSubmit={handleSubmit} className="card mt-8 p-6 sm:p-8">
+        {/* AI drafter */}
+        <div className="rounded-xl border border-accent/25 bg-accent-soft p-4">
+          <div className="flex items-center gap-2">
+            <span className="dot dot-on" />
+            <span className="text-sm font-semibold" style={{ color: "var(--accent-press)" }}>
+              Draft with AI
+            </span>
+          </div>
+          <p className="mt-1 text-xs text-muted">
+            Describe your event in one sentence — Ramai writes the rest.
+          </p>
+          <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+            <input
+              value={intent}
+              onChange={(e) => setIntent(e.target.value)}
+              placeholder="Casual 5-a-side football in Yogyakarta for beginners, Saturday evening"
+              className="input"
+            />
+            <button
+              type="button"
+              onClick={handleDraft}
+              disabled={drafting}
+              className="btn btn-primary btn-md whitespace-nowrap"
+            >
+              {drafting ? "Drafting…" : "Draft with AI"}
+            </button>
+          </div>
         </div>
-      </div>
 
-      <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
-        <Field label="Title">
-          <input required value={form.title} onChange={set("title")} className={inputCls} placeholder="Casual 5-a-side football" />
-        </Field>
-        <Field label="Description">
-          <textarea value={form.description} onChange={set("description")} className={`${inputCls} min-h-24`} placeholder="Relaxed game for beginners…" />
-        </Field>
-        <div className="grid grid-cols-2 gap-4">
-          <Field label="Category">
-            <input value={form.category} onChange={set("category")} className={inputCls} placeholder="sports" />
+        {/* Basics */}
+        <Group title="The basics">
+          <Field label="Title">
+            <input required value={form.title} onChange={set("title")} className="input" placeholder="Casual 5-a-side football" />
           </Field>
-          <Field label="Location">
-            <input value={form.location} onChange={set("location")} className={inputCls} placeholder="Yogyakarta" />
+          <Field label="Description">
+            <textarea value={form.description} onChange={set("description")} className="input min-h-28 resize-y" placeholder="Relaxed game for beginners…" />
           </Field>
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          <Field label="Start time">
-            <input required type="datetime-local" value={form.startTime} onChange={set("startTime")} className={inputCls} />
-          </Field>
-          <Field label="Check-in deadline">
-            <input required type="datetime-local" value={form.checkInDeadline} onChange={set("checkInDeadline")} className={inputCls} />
-          </Field>
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          <Field label="RSVP stake (tBNB, 0 = free)">
-            <input value={form.stake} onChange={set("stake")} className={inputCls} inputMode="decimal" />
-          </Field>
-          <Field label="Capacity (0 = unlimited)">
-            <input value={form.capacity} onChange={set("capacity")} className={inputCls} inputMode="numeric" />
-          </Field>
-        </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Category">
+              <input value={form.category} onChange={set("category")} className="input" placeholder="sports" />
+            </Field>
+            <Field label="Location">
+              <input value={form.location} onChange={set("location")} className="input" placeholder="Yogyakarta" />
+            </Field>
+          </div>
+        </Group>
+
+        {/* Schedule */}
+        <Group title="Schedule">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Start time">
+              <input required type="datetime-local" value={form.startTime} onChange={set("startTime")} className="input [color-scheme:light]" />
+            </Field>
+            <Field label="Check-in deadline" hint="RSVP and check-in close at this time.">
+              <input required type="datetime-local" value={form.checkInDeadline} onChange={set("checkInDeadline")} className="input [color-scheme:light]" />
+            </Field>
+          </div>
+        </Group>
+
+        {/* Commitment */}
+        <Group title="Commitment">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="RSVP stake" hint="tBNB · refunded on check-in. 0 = free.">
+              <input value={form.stake} onChange={set("stake")} className="input" inputMode="decimal" />
+            </Field>
+            <Field label="Capacity" hint="0 = unlimited.">
+              <input value={form.capacity} onChange={set("capacity")} className="input" inputMode="numeric" />
+            </Field>
+          </div>
+        </Group>
 
         {error && (
-          <p className="rounded-lg border border-line px-3 py-2 text-sm" style={{ color: "#d64545" }}>
+          <p className="mt-6 rounded-lg border border-line bg-surface-2 px-3 py-2 text-sm" style={{ color: "#d64545" }}>
             {error}
           </p>
         )}
-        {status && <p className="text-sm text-accent">{status}</p>}
+        {status && <p className="mt-6 text-sm text-accent">{status}</p>}
 
-        <button type="submit" disabled={busy} className="btn btn-primary btn-lg mt-2">
+        <button type="submit" disabled={busy} className="btn btn-primary btn-lg mt-8 w-full">
           {authenticated ? (busy ? "Creating…" : "Create event") : "Sign in to create"}
         </button>
+        <p className="mt-3 text-center text-xs text-muted">
+          You&rsquo;ll approve one transaction to publish this on-chain.
+        </p>
       </form>
     </main>
   );
 }
 
-const inputCls = "input";
+function Group({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="mt-8 border-t border-line pt-6">
+      <h2 className="mono mb-4 text-xs tracking-wide text-muted">{title}</h2>
+      <div className="flex flex-col gap-4">{children}</div>
+    </section>
+  );
+}
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
   return (
     <label className="flex flex-col gap-1.5">
       <span className="text-sm font-medium">{label}</span>
       {children}
+      {hint && <span className="text-xs text-muted">{hint}</span>}
     </label>
   );
 }
