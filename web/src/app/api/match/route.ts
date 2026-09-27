@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { getSupabase, supabaseConfigured, type EventRow } from "@/lib/supabase";
+import type { EventRow } from "@/lib/supabase";
+import { getProfile, listEvents } from "@/lib/store";
 import { aiConfigured, explainMatches } from "@/lib/ai";
 
 const TOP_N = 6;
@@ -24,69 +25,61 @@ function scoreEvent(interests: string[], ev: EventRow): number {
 }
 
 export async function GET(req: Request) {
-  if (!supabaseConfigured) return NextResponse.json({ matches: [], configured: false });
-
   const { searchParams } = new URL(req.url);
   const wallet = searchParams.get("wallet");
 
-  const supabase = getSupabase();
-
-  let interests: string[] = [];
-  if (wallet) {
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("interests")
-      .ilike("wallet", wallet)
-      .maybeSingle();
-    interests = profile?.interests ?? [];
-  }
-
-  const { data: events, error } = await supabase
-    .from("events")
-    .select("*")
-    .order("created_at", { ascending: false });
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-
-  const rows = (events ?? []) as EventRow[];
-
-  // No interests → plain recency list, no scoring/reasons.
-  if (interests.length === 0) {
-    return NextResponse.json({
-      matches: rows.map((ev) => ({ ...ev, score: 0, reason: null })),
-      interests,
-      personalized: false,
-      configured: true,
-    });
-  }
-
-  const ranked = rows
-    .map((ev) => ({ ev, score: scoreEvent(interests, ev) }))
-    .sort((a, b) => b.score - a.score);
-
-  const top = ranked.slice(0, TOP_N).filter((r) => r.score > 0);
-
-  // Explanations only for the scored top set, only if AI is configured.
-  let reasons: Record<number, string> = {};
-  if (aiConfigured && top.length > 0) {
-    try {
-      const list = top.map((r) => ({
-        id: r.ev.onchain_id,
-        title: r.ev.title,
-        category: r.ev.category ?? undefined,
-        tags: r.ev.tags ?? [],
-      }));
-      const res = await explainMatches(interests, list);
-      reasons = Object.fromEntries(res.map((x) => [Number(x.id), x.reason]));
-    } catch {
-      reasons = {};
+  try {
+    let interests: string[] = [];
+    if (wallet) {
+      const profile = await getProfile(wallet);
+      interests = profile?.interests ?? [];
     }
+
+    const rows = await listEvents();
+
+    // No interests → plain recency list, no scoring/reasons.
+    if (interests.length === 0) {
+      return NextResponse.json({
+        matches: rows.map((ev) => ({ ...ev, score: 0, reason: null })),
+        interests,
+        personalized: false,
+        configured: true,
+      });
+    }
+
+    const ranked = rows
+      .map((ev) => ({ ev, score: scoreEvent(interests, ev) }))
+      .sort((a, b) => b.score - a.score);
+
+    const top = ranked.slice(0, TOP_N).filter((r) => r.score > 0);
+
+    let reasons: Record<number, string> = {};
+    if (aiConfigured && top.length > 0) {
+      try {
+        const list = top.map((r) => ({
+          id: r.ev.onchain_id,
+          title: r.ev.title,
+          category: r.ev.category ?? undefined,
+          tags: r.ev.tags ?? [],
+        }));
+        const res = await explainMatches(interests, list);
+        reasons = Object.fromEntries(res.map((x) => [Number(x.id), x.reason]));
+      } catch {
+        reasons = {};
+      }
+    }
+
+    const matches = ranked.map(({ ev, score }) => ({
+      ...ev,
+      score,
+      reason: reasons[ev.onchain_id] ?? null,
+    }));
+
+    return NextResponse.json({ matches, interests, personalized: true, configured: true });
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Match failed" },
+      { status: 500 }
+    );
   }
-
-  const matches = ranked.map(({ ev, score }) => ({
-    ...ev,
-    score,
-    reason: reasons[ev.onchain_id] ?? null,
-  }));
-
-  return NextResponse.json({ matches, interests, personalized: true, configured: true });
 }

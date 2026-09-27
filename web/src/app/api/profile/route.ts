@@ -1,26 +1,23 @@
 import { NextResponse } from "next/server";
-import { getSupabase, supabaseConfigured, type ProfileRow } from "@/lib/supabase";
+import type { ProfileRow } from "@/lib/supabase";
+import { getProfile, upsertProfile } from "@/lib/store";
 
 export async function GET(req: Request) {
-  if (!supabaseConfigured) return NextResponse.json({ profile: null, configured: false });
   const { searchParams } = new URL(req.url);
   const wallet = searchParams.get("wallet");
   if (!wallet) return NextResponse.json({ error: "wallet required" }, { status: 400 });
-
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from("profiles")
-    .select("*")
-    .ilike("wallet", wallet)
-    .maybeSingle();
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json({ profile: data, configured: true });
+  try {
+    const profile = await getProfile(wallet);
+    return NextResponse.json({ profile, configured: true });
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Failed to load profile" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(req: Request) {
-  if (!supabaseConfigured)
-    return NextResponse.json({ error: "Supabase not configured" }, { status: 503 });
-
   let body: Partial<ProfileRow>;
   try {
     body = await req.json();
@@ -37,8 +34,13 @@ export async function POST(req: Request) {
       : [],
   };
 
-  const supabase = getSupabase();
-  const { data, error } = await supabase.from("profiles").upsert(row).select().single();
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json({ profile: data });
+  try {
+    const profile = await upsertProfile(row);
+    return NextResponse.json({ profile });
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Failed to save profile" },
+      { status: 500 }
+    );
+  }
 }

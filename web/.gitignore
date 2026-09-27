@@ -34,6 +34,9 @@ yarn-error.log*
 .env*
 !*.example
 
+# local metadata store (JSON fallback when Supabase is not configured)
+.data/
+
 # vercel
 .vercel
 

@@ -1,29 +1,22 @@
 import { NextResponse } from "next/server";
-import { getSupabase, supabaseConfigured, type EventRow } from "@/lib/supabase";
+import type { EventRow } from "@/lib/supabase";
+import { listEvents, upsertEvent } from "@/lib/store";
 
 export async function GET(req: Request) {
-  if (!supabaseConfigured) {
-    return NextResponse.json({ events: [], configured: false });
-  }
   const { searchParams } = new URL(req.url);
   const organizer = searchParams.get("organizer");
-
-  const supabase = getSupabase();
-  let query = supabase.from("events").select("*").order("created_at", { ascending: false });
-  if (organizer) query = query.ilike("organizer", organizer);
-
-  const { data, error } = await query;
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json({ events: data ?? [], configured: true });
+  try {
+    const events = await listEvents(organizer ?? undefined);
+    return NextResponse.json({ events, configured: true });
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Failed to load events" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(req: Request) {
-  if (!supabaseConfigured) {
-    return NextResponse.json(
-      { error: "Supabase not configured" },
-      { status: 503 }
-    );
-  }
   let body: Partial<EventRow>;
   try {
     body = await req.json();
@@ -52,8 +45,13 @@ export async function POST(req: Request) {
     tags: Array.isArray(body.tags) ? body.tags : [],
   };
 
-  const supabase = getSupabase();
-  const { data, error } = await supabase.from("events").upsert(row).select().single();
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json({ event: data });
+  try {
+    const event = await upsertEvent(row);
+    return NextResponse.json({ event });
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Failed to save event" },
+      { status: 500 }
+    );
+  }
 }

@@ -1,20 +1,18 @@
 import { NextResponse } from "next/server";
-import { getSupabase, supabaseConfigured } from "@/lib/supabase";
+import { getEvent } from "@/lib/store";
 
 export async function GET(
   _req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  if (!supabaseConfigured) {
-    return NextResponse.json({ event: null, configured: false });
+  try {
+    const event = await getEvent(Number(id));
+    return NextResponse.json({ event, configured: true });
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Failed to load event" },
+      { status: 500 }
+    );
   }
-  const supabase = getSupabase();
-  const { data, error } = await supabase
-    .from("events")
-    .select("*")
-    .eq("onchain_id", Number(id))
-    .maybeSingle();
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json({ event: data, configured: true });
 }
