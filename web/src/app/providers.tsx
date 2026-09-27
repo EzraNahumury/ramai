@@ -60,7 +60,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       config={{
         defaultChain: bscTestnet,
         supportedChains: [bscTestnet],
-        loginMethods: ["email"],
+        loginMethods: ["email", "wallet"],
         embeddedWallets: {
           ethereum: { createOnLogin: "users-without-wallets" },
           showWalletUIs: true,
