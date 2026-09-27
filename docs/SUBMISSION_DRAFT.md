@@ -58,13 +58,15 @@ Menargetkan pembunuh nyata event komunitas Indonesia: no-show & discovery buruk.
 MVP (hackathon): create→RSVP staked→check-in→refund→reputasi end-to-end di testnet. Pasca: opBNB, relay gasless, reputasi organizer, waitlist smart-fill, referral. Detail: `docs/DEVELOPMENT_ROADMAP.md`.
 
 ## GitHub
-`[https://github.com/<user-or-org>/ramai]` — repo publik, berisi kode + `docs/`.
+https://github.com/EzraNahumury/ramai — repo publik, berisi kode + `docs/`.
 
 ## Contract Address
 | Kontrak | Jaringan | Alamat |
 |---|---|---|
-| `RamaiEvents` | BSC Testnet (chainId 97) | `[0x… setelah deploy]` |
-| `RamaiReputation` | BSC Testnet (chainId 97) | `[0x… setelah deploy]` |
+| `RamaiEvents` | BSC Testnet (chainId 97) | `0x0FBA1927De712757cDB75264d5700cF239cCa992` |
+| `RamaiReputation` | BSC Testnet (chainId 97) | `0x3072a5b043Ea67c4c597b1E2E82dD63a50aDA23D` |
+
+Explorer: https://testnet.bscscan.com/address/0x0FBA1927De712757cDB75264d5700cF239cCa992
 
 ## Demo Video
 `[link publik ≤5 menit]` — naskah: `docs/DEMO_SCRIPT.md`.

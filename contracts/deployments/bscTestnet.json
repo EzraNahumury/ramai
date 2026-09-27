@@ -1,0 +1,14 @@
+{
+  "network": "bscTestnet",
+  "chainId": 97,
+  "deployedAt": "2026-09-27",
+  "deployer": "0x5Aea061d814A72de9EE9171bE86F45f48e1E2f5d",
+  "contracts": {
+    "RamaiEvents": "0x0FBA1927De712757cDB75264d5700cF239cCa992",
+    "RamaiReputation": "0x3072a5b043Ea67c4c597b1E2E82dD63a50aDA23D"
+  },
+  "explorer": {
+    "RamaiEvents": "https://testnet.bscscan.com/address/0x0FBA1927De712757cDB75264d5700cF239cCa992",
+    "RamaiReputation": "https://testnet.bscscan.com/address/0x3072a5b043Ea67c4c597b1E2E82dD63a50aDA23D"
+  }
+}

@@ -245,8 +245,8 @@ Link demo: _TBD_
 
 | Kontrak | Jaringan | Alamat |
 |---|---|---|
-| `RamaiEvents` | BSC Testnet | Belum di-deploy |
-| `RamaiReputation` | BSC Testnet | Belum di-deploy |
+| `RamaiEvents` | BSC Testnet (97) | [`0x0FBA1927De712757cDB75264d5700cF239cCa992`](https://testnet.bscscan.com/address/0x0FBA1927De712757cDB75264d5700cF239cCa992) |
+| `RamaiReputation` | BSC Testnet (97) | [`0x3072a5b043Ea67c4c597b1E2E82dD63a50aDA23D`](https://testnet.bscscan.com/address/0x3072a5b043Ea67c4c597b1E2E82dD63a50aDA23D) |
 
 ## Screenshot
 
