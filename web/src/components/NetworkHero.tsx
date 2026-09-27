@@ -1,108 +1,194 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+
 /**
- * Signature hero art: a pixel-gradient field with a connected node graph.
- * The graph reads as people/events linking up — "ramai" (a crowd) forming —
- * so the art is about the product, not decoration. CSS-animated, subtle.
+ * Animated node network: square "people" nodes drift, link to nearby nodes
+ * (a crowd forming — "ramai"), pulses travel along links, and pixel-gradient
+ * blocks float behind. Canvas-based for smooth continuous motion.
  */
-
-type Block = { x: number; y: number; s: number; fill: string; o: number };
-type Node = { x: number; y: number; hl?: boolean };
-
-// left + right + bottom pixel clusters (hand-tuned for balance)
-const blocks: Block[] = [
-  // left cluster (cool)
-  { x: 90, y: 150, s: 40, fill: "url(#gCool)", o: 0.5 },
-  { x: 134, y: 120, s: 24, fill: "url(#gCool)", o: 0.35 },
-  { x: 140, y: 196, s: 30, fill: "url(#gCool)", o: 0.65 },
-  { x: 96, y: 210, s: 18, fill: "var(--net-blue)", o: 0.5 },
-  { x: 180, y: 250, s: 22, fill: "url(#gCool)", o: 0.45 },
-  { x: 120, y: 300, s: 34, fill: "url(#gCool)", o: 0.3 },
-  { x: 210, y: 180, s: 14, fill: "var(--net-ink)", o: 0.4 },
-  // right cluster (cool → ink)
-  { x: 1030, y: 120, s: 44, fill: "url(#gCool)", o: 0.5 },
-  { x: 1088, y: 160, s: 26, fill: "url(#gCool)", o: 0.4 },
-  { x: 1030, y: 190, s: 20, fill: "var(--net-blue)", o: 0.5 },
-  { x: 1100, y: 230, s: 34, fill: "url(#gCool)", o: 0.55 },
-  { x: 1060, y: 270, s: 16, fill: "var(--net-ink)", o: 0.45 },
-  { x: 1020, y: 300, s: 24, fill: "url(#gCool)", o: 0.3 },
-  // bottom-center cluster (warm → red)
-  { x: 470, y: 560, s: 40, fill: "url(#gWarm)", o: 0.5 },
-  { x: 520, y: 590, s: 26, fill: "url(#gWarm)", o: 0.6 },
-  { x: 560, y: 556, s: 20, fill: "var(--net-red)", o: 0.55 },
-  { x: 600, y: 588, s: 30, fill: "url(#gWarm)", o: 0.4 },
-  { x: 660, y: 566, s: 22, fill: "url(#gWarm)", o: 0.5 },
-  { x: 700, y: 596, s: 16, fill: "var(--accent)", o: 0.5 },
-  { x: 430, y: 592, s: 18, fill: "url(#gWarm)", o: 0.35 },
-];
-
-const nodes: Node[] = [
-  { x: 250, y: 430 },
-  { x: 332, y: 470, hl: true },
-  { x: 432, y: 502 },
-  { x: 560, y: 470 },
-  { x: 662, y: 512 },
-  { x: 772, y: 462 },
-  { x: 882, y: 500 },
-  { x: 980, y: 440 },
-  { x: 1052, y: 360 },
-  { x: 180, y: 180 },
-  { x: 1030, y: 150 },
-];
-
-const edges: [number, number][] = [
-  [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8],
-  [9, 0], [3, 1], [10, 8], [6, 8],
-];
-
 export function NetworkHero() {
+  const ref = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = ref.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const css = getComputedStyle(document.documentElement);
+    const col = (n: string, fb: string) => css.getPropertyValue(n).trim() || fb;
+    const INK = col("--ink", "#14161c");
+    const BLUE = col("--net-blue", "#3b5bdb");
+    const NETINK = col("--net-ink", "#1d2a5b");
+    const ACCENT = col("--accent", "#ff5a24");
+    const RED = col("--net-red", "#d6455f");
+    const SURFACE = col("--surface", "#ffffff");
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let W = 0;
+    let H = 0;
+
+    type Node = { x: number; y: number; vx: number; vy: number; s: number; warm: boolean; hl: boolean };
+    type Big = { x: number; y: number; s: number; c: string; vx: number; vy: number; a: number };
+    type Pulse = { a: number; b: number; t: number; speed: number };
+
+    let nodes: Node[] = [];
+    let bigs: Big[] = [];
+    let pulses: Pulse[] = [];
+
+    const rand = (a: number, b: number) => a + Math.random() * (b - a);
+
+    function init() {
+      const rect = canvas!.getBoundingClientRect();
+      W = rect.width;
+      H = rect.height;
+      canvas!.width = Math.max(1, Math.floor(W * dpr));
+      canvas!.height = Math.max(1, Math.floor(H * dpr));
+      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const density = Math.round((W * H) / 26000);
+      const N = Math.max(18, Math.min(46, density));
+      nodes = Array.from({ length: N }, (_, i) => ({
+        x: rand(0, W),
+        y: rand(0, H),
+        vx: rand(-0.35, 0.35),
+        vy: rand(-0.35, 0.35),
+        s: rand(4, 9),
+        warm: Math.random() < 0.28,
+        hl: i === 2,
+      }));
+
+      const bigCols = [BLUE, NETINK, ACCENT, RED];
+      bigs = Array.from({ length: 14 }, () => ({
+        x: rand(0, W),
+        y: rand(0, H),
+        s: rand(22, 58),
+        c: bigCols[Math.floor(Math.random() * bigCols.length)],
+        vx: rand(-0.08, 0.08),
+        vy: rand(-0.08, 0.08),
+        a: rand(0.05, 0.16),
+      }));
+
+      pulses = Array.from({ length: 5 }, () => ({
+        a: Math.floor(Math.random() * N),
+        b: Math.floor(Math.random() * N),
+        t: Math.random(),
+        speed: rand(0.003, 0.007),
+      }));
+    }
+
+    function hexA(hex: string, a: number) {
+      const h = hex.replace("#", "");
+      const full = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+      const r = parseInt(full.slice(0, 2), 16);
+      const g = parseInt(full.slice(2, 4), 16);
+      const b = parseInt(full.slice(4, 6), 16);
+      return `rgba(${r},${g},${b},${a})`;
+    }
+
+    const TH = 150;
+    let raf = 0;
+    let t = 0;
+
+    function frame() {
+      t += 1;
+      ctx!.clearRect(0, 0, W, H);
+
+      // floating gradient blocks
+      for (const b of bigs) {
+        b.x += b.vx;
+        b.y += b.vy;
+        if (b.x < -60) b.x = W + 60;
+        if (b.x > W + 60) b.x = -60;
+        if (b.y < -60) b.y = H + 60;
+        if (b.y > H + 60) b.y = -60;
+        ctx!.fillStyle = hexA(b.c, b.a);
+        ctx!.fillRect(b.x, b.y, b.s, b.s);
+      }
+
+      // move nodes
+      for (const n of nodes) {
+        n.x += n.vx;
+        n.y += n.vy;
+        if (n.x < 0 || n.x > W) n.vx *= -1;
+        if (n.y < 0 || n.y > H) n.vy *= -1;
+      }
+
+      // links between nearby nodes
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const d = Math.hypot(dx, dy);
+          if (d < TH) {
+            ctx!.strokeStyle = hexA(INK, 0.18 * (1 - d / TH));
+            ctx!.lineWidth = 1;
+            ctx!.beginPath();
+            ctx!.moveTo(nodes[i].x, nodes[i].y);
+            ctx!.lineTo(nodes[j].x, nodes[j].y);
+            ctx!.stroke();
+          }
+        }
+      }
+
+      // traveling pulses along links
+      for (const p of pulses) {
+        p.t += p.speed;
+        if (p.t >= 1) {
+          p.t = 0;
+          p.a = p.b;
+          p.b = Math.floor(Math.random() * nodes.length);
+        }
+        const A = nodes[p.a];
+        const B = nodes[p.b];
+        if (!A || !B) continue;
+        const px = A.x + (B.x - A.x) * p.t;
+        const py = A.y + (B.y - A.y) * p.t;
+        ctx!.fillStyle = hexA(ACCENT, 0.9);
+        ctx!.fillRect(px - 2, py - 2, 4, 4);
+      }
+
+      // nodes (squares)
+      for (const n of nodes) {
+        const size = n.hl ? n.s + 3 + Math.sin(t / 30) * 1.5 : n.s;
+        const color = n.warm ? ACCENT : BLUE;
+        if (n.hl) {
+          ctx!.fillStyle = hexA(ACCENT, 0.95);
+          ctx!.fillRect(n.x - size / 2, n.y - size / 2, size, size);
+        } else {
+          ctx!.fillStyle = SURFACE;
+          ctx!.fillRect(n.x - size / 2, n.y - size / 2, size, size);
+          ctx!.strokeStyle = hexA(color, 0.8);
+          ctx!.lineWidth = 1.4;
+          ctx!.strokeRect(n.x - size / 2, n.y - size / 2, size, size);
+        }
+      }
+
+      raf = requestAnimationFrame(frame);
+    }
+
+    init();
+    if (reduce) {
+      frame(); // single static frame
+    } else {
+      raf = requestAnimationFrame(frame);
+    }
+
+    const onResize = () => init();
+    window.addEventListener("resize", onResize);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
+
   return (
-    <svg
+    <canvas
+      ref={ref}
       aria-hidden
-      viewBox="0 0 1200 640"
-      preserveAspectRatio="xMidYMid slice"
       className="pointer-events-none absolute inset-0 -z-10 h-full w-full"
-    >
-      <defs>
-        <linearGradient id="gCool" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="var(--net-blue)" />
-          <stop offset="100%" stopColor="var(--net-ink)" />
-        </linearGradient>
-        <linearGradient id="gWarm" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="var(--accent)" />
-          <stop offset="100%" stopColor="var(--net-red)" />
-        </linearGradient>
-      </defs>
-
-      {/* pixel field */}
-      <g className="float-slow">
-        {blocks.map((b, i) => (
-          <rect key={i} x={b.x} y={b.y} width={b.s} height={b.s} fill={b.fill} opacity={b.o} />
-        ))}
-      </g>
-
-      {/* connectors */}
-      <g stroke="var(--ink)" strokeOpacity="0.25" strokeWidth="1">
-        {edges.map(([a, b], i) => (
-          <line key={i} x1={nodes[a].x} y1={nodes[a].y} x2={nodes[b].x} y2={nodes[b].y} />
-        ))}
-      </g>
-
-      {/* nodes */}
-      <g>
-        {nodes.map((n, i) => (
-          <rect
-            key={i}
-            x={n.x - 6}
-            y={n.y - 6}
-            width={12}
-            height={12}
-            fill={n.hl ? "var(--accent)" : "var(--surface)"}
-            stroke={n.hl ? "var(--accent)" : "var(--ink)"}
-            strokeWidth={1.5}
-            className={i % 3 === 0 ? "node-pulse" : undefined}
-            style={{ animationDelay: `${(i % 5) * 0.4}s` }}
-          />
-        ))}
-      </g>
-    </svg>
+    />
   );
 }
