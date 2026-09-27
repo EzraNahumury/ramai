@@ -33,7 +33,7 @@ export default function EventsPage() {
     <main className="mx-auto w-full max-w-5xl px-4 py-10">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="font-display text-3xl font-extrabold tracking-tight">
+          <h1 className="font-display text-4xl font-semibold tracking-tight">
             {personalized ? "Picked for you" : "Discover events"}
           </h1>
           <p className="mt-1 text-sm text-muted">
@@ -79,22 +79,25 @@ export default function EventsPage() {
             <Link
               key={ev.onchain_id}
               href={`/events/${ev.onchain_id}`}
-              className="card flex flex-col p-5 transition-transform hover:-translate-y-0.5"
+              className="card group flex flex-col p-5 transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_8px_30px_rgba(20,22,28,0.06)]"
             >
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-2">
                 {ev.category ? <span className="chip">{ev.category}</span> : <span />}
                 {personalized && ev.score > 0 && (
-                  <span className="text-xs font-semibold text-success">● match</span>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-success-soft px-2 py-0.5 text-xs font-semibold text-success">
+                    <span className="dot" style={{ background: "var(--success)", width: 5, height: 5 }} />
+                    match
+                  </span>
                 )}
               </div>
-              <h2 className="mt-3 line-clamp-2 font-display text-lg font-bold">{ev.title}</h2>
+              <h2 className="mt-3 line-clamp-2 font-display text-xl font-semibold leading-snug">{ev.title}</h2>
               {ev.location && <p className="mt-1 text-sm text-muted">{ev.location}</p>}
               {ev.reason && (
-                <p className="mt-3 border-l-2 border-accent pl-3 text-sm italic text-muted">
+                <p className="mt-3 border-l-2 border-accent pl-3 text-sm italic leading-relaxed text-muted">
                   {ev.reason}
                 </p>
               )}
-              <p className="mt-4 text-sm font-medium">
+              <p className="mt-auto pt-4 text-sm font-medium">
                 {ev.stake_amount_wei && ev.stake_amount_wei !== "0"
                   ? `${formatBNB(ev.stake_amount_wei)} tBNB stake`
                   : "Free RSVP"}

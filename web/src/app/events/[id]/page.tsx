@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { usePrivy } from "@privy-io/react-auth";
 import { useAccount, usePublicClient, useReadContract, useWriteContract } from "wagmi";
@@ -132,8 +133,11 @@ export default function EventDetailPage() {
 
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-10">
-      {meta?.category && <span className="chip">{meta.category}</span>}
-      <h1 className="mt-3 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
+      <Link href="/events" className="mono text-xs text-muted transition-colors hover:text-ink">
+        ← Discover
+      </Link>
+      <div className="mt-4">{meta?.category && <span className="chip">{meta.category}</span>}</div>
+      <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
         {meta?.title ?? `Event #${params.id}`}
       </h1>
       {meta?.description && (
@@ -151,8 +155,8 @@ export default function EventDetailPage() {
           />
           <Info label="Host" value={shortAddr(ev?.organizer)} />
           <div>
-            <dt className="text-xs text-muted">Guest list</dt>
-            <dd className="mt-1.5">
+            <dt className="mono text-[11px] tracking-wide text-muted">Guest list</dt>
+            <dd className="mt-2">
               <AttendanceDots joined={ev?.joinedCount ?? 0} capacity={ev?.capacity ?? 0} />
             </dd>
           </div>
@@ -206,7 +210,7 @@ export default function EventDetailPage() {
 function Info({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className="text-xs text-muted">{label}</dt>
+      <dt className="mono text-[11px] tracking-wide text-muted">{label}</dt>
       <dd className="mt-1 font-medium">{value}</dd>
     </div>
   );

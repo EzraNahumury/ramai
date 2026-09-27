@@ -49,19 +49,21 @@ export default function ProfilePage() {
     }
   }
 
+  const chips = interests.split(",").map((s) => s.trim()).filter(Boolean);
+
   return (
-    <main className="mx-auto w-full max-w-xl px-4 py-10">
-      <h1 className="font-display text-3xl font-extrabold tracking-tight">Your interests</h1>
-      <p className="mt-1 text-sm text-muted">
+    <main className="mx-auto w-full max-w-xl px-4 py-12">
+      <h1 className="font-display text-4xl font-semibold tracking-tight">Your interests</h1>
+      <p className="mt-2 text-sm text-muted">
         Tell Ramai what you&apos;re into — it uses this to find events that actually fit.
       </p>
 
       {!authenticated ? (
-        <button onClick={login} className="btn btn-primary btn-md mt-6">
+        <button onClick={login} className="btn btn-primary btn-md mt-8">
           Sign in
         </button>
       ) : (
-        <div className="mt-6 flex flex-col gap-4">
+        <div className="card mt-8 flex flex-col gap-5 p-6 sm:p-8">
           <label className="flex flex-col gap-1.5">
             <span className="text-sm font-medium">Display name</span>
             <input
@@ -72,18 +74,32 @@ export default function ProfilePage() {
             />
           </label>
           <label className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium">Interests (comma separated)</span>
+            <span className="text-sm font-medium">Interests</span>
             <input
               value={interests}
               onChange={(e) => setInterests(e.target.value)}
               placeholder="futsal, board games, live music, tech meetup"
               className="input"
             />
+            <span className="text-xs text-muted">Separate with commas.</span>
           </label>
-          <button onClick={save} disabled={busy} className="btn btn-primary btn-md">
-            {busy ? "Saving…" : "Save interests"}
-          </button>
-          {status && <p className="text-sm text-accent">{status}</p>}
+
+          {chips.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {chips.map((c, i) => (
+                <span key={i} className="chip">
+                  {c}
+                </span>
+              ))}
+            </div>
+          )}
+
+          <div className="flex items-center gap-3 border-t border-line pt-5">
+            <button onClick={save} disabled={busy} className="btn btn-primary btn-md">
+              {busy ? "Saving…" : "Save interests"}
+            </button>
+            {status && <p className="text-sm text-accent">{status}</p>}
+          </div>
         </div>
       )}
     </main>

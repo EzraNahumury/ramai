@@ -31,8 +31,8 @@ export default function OrganizerPage() {
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-10">
-      <h1 className="font-display text-3xl font-extrabold tracking-tight">Organizer</h1>
-      <p className="mt-1 text-sm text-muted">Check in attendees and settle no-shows.</p>
+      <h1 className="font-display text-4xl font-semibold tracking-tight">Organizer</h1>
+      <p className="mt-2 text-sm text-muted">Check in attendees and settle no-shows.</p>
 
       {!authenticated ? (
         <button onClick={login} className="btn btn-primary btn-md mt-6">
@@ -120,44 +120,50 @@ function OrganizerEventCard({ ev }: { ev: EventRow }) {
   };
 
   return (
-    <div className="card p-5">
-      <div className="flex items-center justify-between">
-        <Link href={`/events/${ev.onchain_id}`} className="font-display font-bold hover:text-accent">
+    <div className="card p-6">
+      <div className="flex items-center justify-between gap-3">
+        <Link href={`/events/${ev.onchain_id}`} className="font-display text-lg font-semibold hover:text-accent">
           {ev.title}
         </Link>
-        <span className="text-xs text-muted">
+        <span className="mono shrink-0 text-xs text-muted">
           {ev.stake_amount_wei && ev.stake_amount_wei !== "0"
             ? `${formatBNB(ev.stake_amount_wei)} tBNB`
             : "Free"}
         </span>
       </div>
 
-      <div className="mt-4 flex flex-col gap-2 sm:flex-row">
-        <input
-          value={attendee}
-          onChange={(e) => setAttendee(e.target.value)}
-          placeholder="Attendee address 0x…"
-          className="input flex-1 font-mono text-xs"
-        />
-        <button onClick={checkIn} disabled={busy} className="btn btn-primary btn-md">
-          Check in
-        </button>
+      <div className="mt-5">
+        <p className="mono mb-2 text-xs tracking-wide text-muted">Check in attendee</p>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <input
+            value={attendee}
+            onChange={(e) => setAttendee(e.target.value)}
+            placeholder="0x… attendee wallet"
+            className="input flex-1 font-mono text-xs"
+          />
+          <button onClick={checkIn} disabled={busy} className="btn btn-primary btn-md">
+            Check in
+          </button>
+        </div>
       </div>
 
-      <div className="mt-2 flex flex-col gap-2 sm:flex-row">
-        <input
-          value={noShows}
-          onChange={(e) => setNoShows(e.target.value)}
-          placeholder="No-show addresses (comma separated)"
-          className="input flex-1 font-mono text-xs"
-        />
-        <button onClick={settle} disabled={busy} className="btn btn-ghost btn-md">
-          Settle no-shows
-        </button>
+      <div className="mt-4">
+        <p className="mono mb-2 text-xs tracking-wide text-muted">Settle no-shows (after deadline)</p>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <input
+            value={noShows}
+            onChange={(e) => setNoShows(e.target.value)}
+            placeholder="0x…, 0x… comma separated"
+            className="input flex-1 font-mono text-xs"
+          />
+          <button onClick={settle} disabled={busy} className="btn btn-outline btn-md">
+            Settle
+          </button>
+        </div>
       </div>
 
-      {status && <p className="mt-2 text-sm text-accent">{status}</p>}
-      {error && <p className="mt-2 break-words text-sm" style={{ color: "#d64545" }}>{error}</p>}
+      {status && <p className="mt-3 text-sm text-accent">{status}</p>}
+      {error && <p className="mt-3 break-words text-sm" style={{ color: "#d64545" }}>{error}</p>}
     </div>
   );
 }
