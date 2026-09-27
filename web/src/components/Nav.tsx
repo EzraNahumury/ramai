@@ -20,19 +20,17 @@ export function Nav() {
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-2">
             <Logo />
-            <span className="font-display text-lg font-extrabold tracking-tight">Ramai</span>
+            <span className="font-display text-xl font-semibold tracking-tight">Ramai</span>
           </Link>
-          <div className="hidden items-center gap-1 sm:flex">
+          <div className="mono hidden items-center gap-5 text-[13px] sm:flex">
             {links.map((l) => {
               const active = pathname === l.href || pathname.startsWith(l.href + "/");
               return (
                 <Link
                   key={l.href}
                   href={l.href}
-                  className={`rounded-full px-3 py-1.5 text-sm transition-colors ${
-                    active
-                      ? "bg-surface-2 font-semibold text-ink"
-                      : "text-muted hover:text-ink"
+                  className={`transition-colors ${
+                    active ? "text-ink" : "text-muted hover:text-ink"
                   }`}
                 >
                   {l.label}

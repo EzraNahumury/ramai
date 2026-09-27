@@ -1,35 +1,41 @@
 @import "tailwindcss";
 
+/* Light editorial theme (default). Dark is opt-in via [data-theme="dark"]. */
 :root {
-  --bg: #f6f5f4;
+  --bg: #fbfcfe;
   --surface: #ffffff;
-  --surface-2: #faf9f8;
-  --ink: #1b1a20;
-  --muted: #6c6a72;
-  --line: #e7e5e2;
+  --surface-2: #f4f6fa;
+  --ink: #14161c;
+  --muted: #5b6270;
+  --line: #e6e9ef;
   --accent: #ff5a24;
-  --accent-press: #e64a18;
-  --accent-soft: #ffeae1;
+  --accent-press: #e0430f;
+  --accent-soft: #fff0ea;
   --success: #0e9f6e;
-  --success-soft: #dff5ec;
-  --gold: #d9962a;
+  --success-soft: #e4f6ee;
+  --gold: #c98a1e;
+  /* network art */
+  --net-blue: #3b5bdb;
+  --net-ink: #1d2a5b;
+  --net-red: #d6455f;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #131217;
-    --surface: #1c1b22;
-    --surface-2: #232128;
-    --ink: #f3f1ee;
-    --muted: #a8a5ae;
-    --line: #2c2a33;
-    --accent: #ff6a3a;
-    --accent-press: #ff5a24;
-    --accent-soft: #2a1b16;
-    --success: #2bb48a;
-    --success-soft: #17271f;
-    --gold: #e8b24a;
-  }
+:root[data-theme="dark"] {
+  --bg: #0c0d12;
+  --surface: #14161d;
+  --surface-2: #1b1e27;
+  --ink: #f3f4f7;
+  --muted: #9aa0ad;
+  --line: #262a35;
+  --accent: #ff6a3a;
+  --accent-press: #ff5a24;
+  --accent-soft: #2a1b16;
+  --success: #2bb48a;
+  --success-soft: #17271f;
+  --gold: #e8b24a;
+  --net-blue: #5b78e8;
+  --net-ink: #8fa0e0;
+  --net-red: #e8677d;
 }
 
 @theme inline {
@@ -45,8 +51,9 @@
   --color-success: var(--success);
   --color-success-soft: var(--success-soft);
   --color-gold: var(--gold);
-  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jbmono), ui-monospace, "SFMono-Regular", monospace;
 }
 
 body {
@@ -57,8 +64,15 @@ body {
 }
 
 h1, h2, h3 {
-  font-family: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
-  letter-spacing: -0.02em;
+  font-family: var(--font-fraunces), Georgia, serif;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+/* small technical labels (nav, banner) — matches the editorial reference */
+.mono {
+  font-family: var(--font-jbmono), ui-monospace, monospace;
+  font-feature-settings: "tnum" 1;
 }
 
 /* ---- component primitives ---- */
@@ -68,11 +82,12 @@ h1, h2, h3 {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  border-radius: 9999px;
+  border-radius: 0.5rem;
   font-weight: 600;
   line-height: 1;
-  transition: background-color 0.15s ease, transform 0.05s ease, border-color 0.15s ease;
+  transition: background 0.15s ease, transform 0.05s ease, border-color 0.15s ease, color 0.15s ease;
   cursor: pointer;
+  white-space: nowrap;
 }
 .btn:active {
   transform: translateY(1px);
@@ -82,24 +97,30 @@ h1, h2, h3 {
   cursor: not-allowed;
 }
 .btn-primary {
-  background: var(--accent);
+  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-press) 100%);
   color: #fff;
+  box-shadow: 0 1px 2px rgba(224, 67, 15, 0.25);
 }
 .btn-primary:hover:not(:disabled) {
-  background: var(--accent-press);
+  filter: brightness(1.05);
 }
-.btn-ghost {
+.btn-ghost,
+.btn-outline {
   background: transparent;
   color: var(--ink);
   border: 1px solid var(--line);
 }
-.btn-ghost:hover:not(:disabled) {
+.btn-outline {
+  border-color: color-mix(in srgb, var(--ink) 28%, transparent);
+}
+.btn-ghost:hover:not(:disabled),
+.btn-outline:hover:not(:disabled) {
   background: var(--surface-2);
 }
 .btn-lg {
   height: 3rem;
   padding: 0 1.5rem;
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 .btn-md {
   height: 2.5rem;
@@ -115,7 +136,7 @@ h1, h2, h3 {
 .card {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 1.1rem;
+  border-radius: 0.9rem;
 }
 
 .chip {
@@ -133,21 +154,22 @@ h1, h2, h3 {
   width: 100%;
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 0.7rem;
+  border-radius: 0.6rem;
   padding: 0.6rem 0.8rem;
   font-size: 0.9rem;
   color: var(--ink);
   outline: none;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .input:focus {
   border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 .input::placeholder {
   color: var(--muted);
 }
 
-/* attendance dots — the signature motif (guest list filling up) */
+/* attendance dots — the "guest list filling up" motif */
 .dot {
   width: 0.5rem;
   height: 0.5rem;
@@ -159,4 +181,28 @@ h1, h2, h3 {
 }
 .dot-off {
   background: var(--line);
+}
+
+/* hero network art */
+@keyframes nodePulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.node-pulse { animation: nodePulse 3.2s ease-in-out infinite; }
+.float-slow { animation: floatY 9s ease-in-out infinite; }
+.fade-up { animation: fadeUp 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }
