@@ -14,7 +14,7 @@ import { toUnixSeconds } from "@/lib/format";
 
 export default function CreateEventPage() {
   const router = useRouter();
-  const { authenticated, login } = usePrivy();
+  const { authenticated, login, getAccessToken } = usePrivy();
   const { address } = useAccount();
   const publicClient = usePublicClient();
   const { writeContractAsync } = useWriteContract();
@@ -130,9 +130,10 @@ export default function CreateEventPage() {
       if (eventId === undefined) throw new Error("Could not read event id from receipt.");
 
       setStatus("Saving event details…");
-      await fetch("/api/events", {
+      const token = await getAccessToken();
+      const saveRes = await fetch("/api/events", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({
           onchain_id: Number(eventId),
           organizer: address,
@@ -147,6 +148,13 @@ export default function CreateEventPage() {
           tags,
         }),
       });
+
+      if (!saveRes.ok) {
+        const d = await saveRes.json().catch(() => ({}));
+        throw new Error(
+          `Event is on-chain (#${eventId}) but saving details failed: ${d.error ?? saveRes.status}`
+        );
+      }
 
       router.push(`/events/${eventId}`);
     } catch (err) {

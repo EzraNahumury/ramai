@@ -1,15 +1,19 @@
 import { NextResponse } from "next/server";
 import type { ProfileRow } from "@/lib/supabase";
 import { getProfile, upsertProfile } from "@/lib/store";
+import { requireWallet, authErrorResponse } from "@/lib/auth";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const wallet = searchParams.get("wallet");
   if (!wallet) return NextResponse.json({ error: "wallet required" }, { status: 400 });
   try {
+    await requireWallet(req, wallet);
     const profile = await getProfile(wallet);
     return NextResponse.json({ profile, configured: true });
   } catch (err) {
+    const authRes = authErrorResponse(err);
+    if (authRes) return authRes;
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Failed to load profile" },
       { status: 500 }
@@ -26,11 +30,21 @@ export async function POST(req: Request) {
   }
   if (!body.wallet) return NextResponse.json({ error: "wallet required" }, { status: 400 });
 
+  try {
+    await requireWallet(req, body.wallet);
+  } catch (err) {
+    return authErrorResponse(err) ?? NextResponse.json({ error: "Auth failed" }, { status: 401 });
+  }
+
   const row: ProfileRow = {
     wallet: body.wallet,
-    display_name: body.display_name ?? null,
+    display_name: typeof body.display_name === "string" ? body.display_name.slice(0, 60) : null,
     interests: Array.isArray(body.interests)
-      ? body.interests.map((s) => s.trim()).filter(Boolean)
+      ? body.interests
+          .filter((s): s is string => typeof s === "string")
+          .map((s) => s.trim().slice(0, 40))
+          .filter(Boolean)
+          .slice(0, 20)
       : [],
   };
 

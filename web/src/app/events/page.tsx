@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAccount } from "wagmi";
+import { usePrivy } from "@privy-io/react-auth";
 import type { EventRow } from "@/lib/supabase";
 import { formatBNB } from "@/lib/format";
 
@@ -10,16 +11,25 @@ type MatchRow = EventRow & { score: number; reason: string | null };
 
 export default function EventsPage() {
   const { address } = useAccount();
+  const { authenticated, getAccessToken } = usePrivy();
   const [events, setEvents] = useState<MatchRow[]>([]);
   const [configured, setConfigured] = useState(true);
   const [personalized, setPersonalized] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const url = address ? `/api/match?wallet=${address}` : "/api/match";
     setLoading(true);
-    fetch(url)
-      .then((r) => r.json())
+    const load = async () => {
+      // Personalized matches need proof of wallet ownership; fall back to the plain list.
+      const token = address && authenticated ? await getAccessToken() : null;
+      const res = token
+        ? await fetch(`/api/match?wallet=${address}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+        : await fetch("/api/match");
+      return res.json();
+    };
+    load()
       .then((d) => {
         setEvents(d.matches ?? []);
         setConfigured(d.configured !== false);
@@ -27,7 +37,7 @@ export default function EventsPage() {
       })
       .catch(() => setConfigured(false))
       .finally(() => setLoading(false));
-  }, [address]);
+  }, [address, authenticated, getAccessToken]);
 
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-10">

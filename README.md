@@ -206,6 +206,7 @@ pnpm dev
 ```bash
 # Login (Privy)
 NEXT_PUBLIC_PRIVY_APP_ID=
+PRIVY_APP_SECRET=                       # server-only; API memverifikasi sesi login dengan ini
 
 # Chain (BSC Testnet, chainId 97)
 NEXT_PUBLIC_BSC_TESTNET_RPC_URL=https://data-seed-prebsc-1-s1.bnbchain.org:8545

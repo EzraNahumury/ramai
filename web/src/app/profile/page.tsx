@@ -5,7 +5,7 @@ import { usePrivy } from "@privy-io/react-auth";
 import { useAccount } from "wagmi";
 
 export default function ProfilePage() {
-  const { authenticated, login } = usePrivy();
+  const { authenticated, login, getAccessToken } = usePrivy();
   const { address } = useAccount();
   const [interests, setInterests] = useState("");
   const [name, setName] = useState("");
@@ -14,7 +14,12 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (!address) return;
-    fetch(`/api/profile?wallet=${address}`)
+    getAccessToken()
+      .then((token) =>
+        fetch(`/api/profile?wallet=${address}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+      )
       .then((r) => r.json())
       .then((d) => {
         if (d.profile) {
@@ -23,16 +28,17 @@ export default function ProfilePage() {
         }
       })
       .catch(() => {});
-  }, [address]);
+  }, [address, getAccessToken]);
 
   async function save() {
     if (!address) return;
     setBusy(true);
     setStatus("");
     try {
+      const token = await getAccessToken();
       const res = await fetch("/api/profile", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({
           wallet: address,
           display_name: name,

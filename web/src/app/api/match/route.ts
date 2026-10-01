@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import type { EventRow } from "@/lib/supabase";
 import { getProfile, listEvents } from "@/lib/store";
 import { aiConfigured, explainMatches } from "@/lib/ai";
+import { requireWallet, authErrorResponse } from "@/lib/auth";
+import { rateLimit } from "@/lib/ratelimit";
 
 const TOP_N = 6;
 
@@ -28,9 +30,13 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const wallet = searchParams.get("wallet");
 
+  const limited = rateLimit(req, "match", 30);
+  if (limited) return limited;
+
   try {
     let interests: string[] = [];
     if (wallet) {
+      await requireWallet(req, wallet);
       const profile = await getProfile(wallet);
       interests = profile?.interests ?? [];
     }
@@ -77,6 +83,8 @@ export async function GET(req: Request) {
 
     return NextResponse.json({ matches, interests, personalized: true, configured: true });
   } catch (err) {
+    const authRes = authErrorResponse(err);
+    if (authRes) return authRes;
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Match failed" },
       { status: 500 }

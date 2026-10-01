@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@privy-io/node": "^0.35.0",
     "@privy-io/react-auth": "^3.45.0",
     "@privy-io/wagmi": "^4.0.17",
     "@supabase/supabase-js": "^2.116.0",

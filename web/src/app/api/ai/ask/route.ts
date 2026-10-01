@@ -1,8 +1,23 @@
 import { NextResponse } from "next/server";
 import { aiConfigured, askAboutEvent, type ChatMessage } from "@/lib/ai";
 import { getEvent } from "@/lib/store";
+import { rateLimit } from "@/lib/ratelimit";
+
+function sanitizeHistory(h: unknown): ChatMessage[] {
+  if (!Array.isArray(h)) return [];
+  return h
+    .filter(
+      (m): m is ChatMessage =>
+        m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string"
+    )
+    .slice(-6)
+    .map((m) => ({ role: m.role, content: m.content.slice(0, 500) }));
+}
 
 export async function POST(req: Request) {
+  const limited = rateLimit(req, "ai-ask", 20);
+  if (limited) return limited;
+
   if (!aiConfigured) {
     return NextResponse.json(
       { error: "AI not configured" },
@@ -19,6 +34,7 @@ export async function POST(req: Request) {
 
   const question = (body.question ?? "").trim();
   if (!question) return NextResponse.json({ error: "question required" }, { status: 400 });
+  if (question.length > 500) return NextResponse.json({ error: "Question too long (max 500 chars)" }, { status: 400 });
   if (body.eventId === undefined) return NextResponse.json({ error: "eventId required" }, { status: 400 });
 
   try {
@@ -39,7 +55,7 @@ export async function POST(req: Request) {
       note: "RSVP stake is refundable on check-in; forfeited if you don't show up. Attendance is verified on-chain and builds reputation.",
     };
 
-    const answer = await askAboutEvent(context, question, body.history ?? []);
+    const answer = await askAboutEvent(context, question, sanitizeHistory(body.history));
     return NextResponse.json({ answer });
   } catch (err) {
     return NextResponse.json(
