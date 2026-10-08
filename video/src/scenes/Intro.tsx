@@ -119,7 +119,7 @@ const PILLARS: Pillar[] = [
     k: "02",
     title: "A stake makes RSVP real",
     body: "A small refundable deposit replaces the empty tap. Show up and it comes straight back.",
-    start: 218,
+    start: 244,
     // Everyone who commits fills in, one after another.
     motif: (frame, start) => (
       <div style={row}>
@@ -133,7 +133,7 @@ const PILLARS: Pillar[] = [
     k: "03",
     title: "Showing up counts",
     body: "Every verified check-in becomes on-chain reputation you own and carry to the next event.",
-    start: 284,
+    start: 338,
     // Reputation ticks up with each check-in.
     motif: (frame, start) => {
       const n = Math.round(
@@ -182,7 +182,7 @@ const Pillars: React.FC = () => {
       {PILLARS.map((p, i) => {
         const enter = prog(frame, p.start, 28);
         // The newest card carries the accent border until the next one arrives.
-        const next = PILLARS[i + 1]?.start ?? 380;
+        const next = PILLARS[i + 1]?.start ?? 440;
         const active = prog(frame, p.start, 12) - prog(frame, next, 16);
         return (
           <div
@@ -237,9 +237,9 @@ const Pillars: React.FC = () => {
 
 const Footer: React.FC = () => {
   const frame = useCurrentFrame();
-  const p = prog(frame, 372, 24);
+  const p = prog(frame, 404, 24);
   return (
-    <AbsoluteFill style={{ justifyContent: "flex-end", alignItems: "center", paddingBottom: 84 }}>
+    <AbsoluteFill style={{ justifyContent: "flex-end", alignItems: "center", paddingBottom: 150 }}>
       <div
         style={{
           display: "flex",

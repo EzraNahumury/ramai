@@ -5,3 +5,10 @@ dist
 
 # Ignore the output video from Git but not videos you import into src/.
 out
+
+# Raw screen recordings are large (about 270 MB). Only the trimmed cuts in public/cuts/ are tracked.
+public/*.mp4
+
+# Background music is licensed for use in the video, not for redistribution as a file.
+# Source and download steps are in VIDEO_PLAN.md.
+public/music/

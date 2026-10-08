@@ -1,0 +1,1117 @@
+{
+  "hook": {
+    "duration": 10.542,
+    "words": [
+      {
+        "text": "Creating",
+        "start": 0,
+        "end": 0.499
+      },
+      {
+        "text": "an",
+        "start": 0.546,
+        "end": 0.604
+      },
+      {
+        "text": "event",
+        "start": 0.662,
+        "end": 0.975
+      },
+      {
+        "text": "is",
+        "start": 1.045,
+        "end": 1.184
+      },
+      {
+        "text": "easy.",
+        "start": 1.265,
+        "end": 1.765
+      },
+      {
+        "text": "Filling",
+        "start": 2.09,
+        "end": 2.403
+      },
+      {
+        "text": "the",
+        "start": 2.45,
+        "end": 2.519
+      },
+      {
+        "text": "room",
+        "start": 2.566,
+        "end": 2.728
+      },
+      {
+        "text": "is",
+        "start": 2.775,
+        "end": 2.856
+      },
+      {
+        "text": "not.",
+        "start": 2.937,
+        "end": 3.32
+      },
+      {
+        "text": "Twelve",
+        "start": 3.762,
+        "end": 4.098
+      },
+      {
+        "text": "people",
+        "start": 4.133,
+        "end": 4.435
+      },
+      {
+        "text": "say",
+        "start": 4.481,
+        "end": 4.644
+      },
+      {
+        "text": "yes.",
+        "start": 4.714,
+        "end": 5.201
+      },
+      {
+        "text": "Four",
+        "start": 5.41,
+        "end": 5.642
+      },
+      {
+        "text": "show",
+        "start": 5.724,
+        "end": 5.956
+      },
+      {
+        "text": "up.",
+        "start": 6.026,
+        "end": 6.293
+      },
+      {
+        "text": "Because",
+        "start": 6.618,
+        "end": 6.908
+      },
+      {
+        "text": "a",
+        "start": 6.943,
+        "end": 6.966
+      },
+      {
+        "text": "free",
+        "start": 7.047,
+        "end": 7.303
+      },
+      {
+        "text": "RSVP",
+        "start": 7.361,
+        "end": 8.115
+      },
+      {
+        "text": "costs",
+        "start": 8.29,
+        "end": 8.557
+      },
+      {
+        "text": "nothing,",
+        "start": 8.626,
+        "end": 9.102
+      },
+      {
+        "text": "so",
+        "start": 9.218,
+        "end": 9.381
+      },
+      {
+        "text": "it",
+        "start": 9.451,
+        "end": 9.52
+      },
+      {
+        "text": "means",
+        "start": 9.578,
+        "end": 9.799
+      },
+      {
+        "text": "nothing.",
+        "start": 9.868,
+        "end": 10.542
+      }
+    ]
+  },
+  "intro": {
+    "duration": 10.588,
+    "words": [
+      {
+        "text": "This",
+        "start": 0,
+        "end": 0.209
+      },
+      {
+        "text": "is",
+        "start": 0.267,
+        "end": 0.348
+      },
+      {
+        "text": "Ramai.",
+        "start": 0.43,
+        "end": 1.045
+      },
+      {
+        "text": "AI",
+        "start": 1.254,
+        "end": 1.625
+      },
+      {
+        "text": "matches",
+        "start": 1.718,
+        "end": 2.09
+      },
+      {
+        "text": "each",
+        "start": 2.206,
+        "end": 2.426
+      },
+      {
+        "text": "event",
+        "start": 2.473,
+        "end": 2.775
+      },
+      {
+        "text": "to",
+        "start": 2.821,
+        "end": 2.879
+      },
+      {
+        "text": "the",
+        "start": 2.937,
+        "end": 3.007
+      },
+      {
+        "text": "right",
+        "start": 3.042,
+        "end": 3.228
+      },
+      {
+        "text": "people.",
+        "start": 3.274,
+        "end": 3.727
+      },
+      {
+        "text": "A",
+        "start": 4.052,
+        "end": 4.122
+      },
+      {
+        "text": "small",
+        "start": 4.214,
+        "end": 4.54
+      },
+      {
+        "text": "refundable",
+        "start": 4.621,
+        "end": 5.259
+      },
+      {
+        "text": "stake",
+        "start": 5.294,
+        "end": 5.642
+      },
+      {
+        "text": "makes",
+        "start": 5.689,
+        "end": 5.886
+      },
+      {
+        "text": "every",
+        "start": 6.002,
+        "end": 6.316
+      },
+      {
+        "text": "RSVP",
+        "start": 6.397,
+        "end": 6.966
+      },
+      {
+        "text": "real.",
+        "start": 7.14,
+        "end": 7.558
+      },
+      {
+        "text": "And",
+        "start": 7.883,
+        "end": 8.046
+      },
+      {
+        "text": "showing",
+        "start": 8.139,
+        "end": 8.51
+      },
+      {
+        "text": "up",
+        "start": 8.568,
+        "end": 8.684
+      },
+      {
+        "text": "becomes",
+        "start": 8.742,
+        "end": 9.067
+      },
+      {
+        "text": "reputation",
+        "start": 9.183,
+        "end": 9.799
+      },
+      {
+        "text": "you",
+        "start": 9.857,
+        "end": 9.938
+      },
+      {
+        "text": "own.",
+        "start": 10.019,
+        "end": 10.588
+      }
+    ]
+  },
+  "onboarding": {
+    "duration": 6.78,
+    "words": [
+      {
+        "text": "Getting",
+        "start": 0,
+        "end": 0.313
+      },
+      {
+        "text": "started",
+        "start": 0.36,
+        "end": 0.685
+      },
+      {
+        "text": "takes",
+        "start": 0.72,
+        "end": 0.906
+      },
+      {
+        "text": "an",
+        "start": 0.94,
+        "end": 0.998
+      },
+      {
+        "text": "email.",
+        "start": 1.045,
+        "end": 1.498
+      },
+      {
+        "text": "Ramai",
+        "start": 1.881,
+        "end": 2.148
+      },
+      {
+        "text": "creates",
+        "start": 2.206,
+        "end": 2.508
+      },
+      {
+        "text": "your",
+        "start": 2.543,
+        "end": 2.659
+      },
+      {
+        "text": "wallet",
+        "start": 2.705,
+        "end": 2.972
+      },
+      {
+        "text": "for",
+        "start": 3.019,
+        "end": 3.123
+      },
+      {
+        "text": "you,",
+        "start": 3.193,
+        "end": 3.39
+      },
+      {
+        "text": "with",
+        "start": 3.425,
+        "end": 3.587
+      },
+      {
+        "text": "no",
+        "start": 3.657,
+        "end": 3.785
+      },
+      {
+        "text": "seed",
+        "start": 3.866,
+        "end": 4.098
+      },
+      {
+        "text": "phrase.",
+        "start": 4.156,
+        "end": 4.69
+      },
+      {
+        "text": "Then",
+        "start": 5.132,
+        "end": 5.294
+      },
+      {
+        "text": "you",
+        "start": 5.341,
+        "end": 5.41
+      },
+      {
+        "text": "tell",
+        "start": 5.48,
+        "end": 5.619
+      },
+      {
+        "text": "it",
+        "start": 5.666,
+        "end": 5.712
+      },
+      {
+        "text": "what",
+        "start": 5.735,
+        "end": 5.84
+      },
+      {
+        "text": "you're",
+        "start": 5.875,
+        "end": 6.049
+      },
+      {
+        "text": "into.",
+        "start": 6.072,
+        "end": 6.78
+      }
+    ]
+  },
+  "create": {
+    "duration": 12.353,
+    "words": [
+      {
+        "text": "An",
+        "start": 0,
+        "end": 0.151
+      },
+      {
+        "text": "organizer",
+        "start": 0.209,
+        "end": 0.731
+      },
+      {
+        "text": "describes",
+        "start": 0.789,
+        "end": 1.277
+      },
+      {
+        "text": "the",
+        "start": 1.3,
+        "end": 1.37
+      },
+      {
+        "text": "event",
+        "start": 1.416,
+        "end": 1.649
+      },
+      {
+        "text": "in",
+        "start": 1.695,
+        "end": 1.753
+      },
+      {
+        "text": "one",
+        "start": 1.823,
+        "end": 1.985
+      },
+      {
+        "text": "sentence,",
+        "start": 2.032,
+        "end": 2.635
+      },
+      {
+        "text": "and",
+        "start": 2.961,
+        "end": 3.123
+      },
+      {
+        "text": "AI",
+        "start": 3.193,
+        "end": 3.518
+      },
+      {
+        "text": "drafts",
+        "start": 3.587,
+        "end": 3.971
+      },
+      {
+        "text": "the",
+        "start": 4.04,
+        "end": 4.122
+      },
+      {
+        "text": "title",
+        "start": 4.168,
+        "end": 4.493
+      },
+      {
+        "text": "and",
+        "start": 4.528,
+        "end": 4.609
+      },
+      {
+        "text": "description.",
+        "start": 4.644,
+        "end": 5.283
+      },
+      {
+        "text": "They",
+        "start": 5.724,
+        "end": 5.886
+      },
+      {
+        "text": "set",
+        "start": 5.933,
+        "end": 6.095
+      },
+      {
+        "text": "a",
+        "start": 6.13,
+        "end": 6.153
+      },
+      {
+        "text": "stake",
+        "start": 6.211,
+        "end": 6.676
+      },
+      {
+        "text": "and",
+        "start": 6.699,
+        "end": 6.838
+      },
+      {
+        "text": "a",
+        "start": 6.885,
+        "end": 6.908
+      },
+      {
+        "text": "capacity,",
+        "start": 6.966,
+        "end": 7.779
+      },
+      {
+        "text": "then",
+        "start": 7.86,
+        "end": 8.022
+      },
+      {
+        "text": "publish.",
+        "start": 8.092,
+        "end": 8.615
+      },
+      {
+        "text": "The",
+        "start": 8.998,
+        "end": 9.114
+      },
+      {
+        "text": "commitment",
+        "start": 9.172,
+        "end": 9.601
+      },
+      {
+        "text": "rules",
+        "start": 9.648,
+        "end": 9.938
+      },
+      {
+        "text": "now",
+        "start": 10.008,
+        "end": 10.17
+      },
+      {
+        "text": "live",
+        "start": 10.24,
+        "end": 10.426
+      },
+      {
+        "text": "on",
+        "start": 10.472,
+        "end": 10.565
+      },
+      {
+        "text": "BNB",
+        "start": 10.658,
+        "end": 11.146
+      },
+      {
+        "text": "Smart",
+        "start": 11.32,
+        "end": 11.633
+      },
+      {
+        "text": "Chain.",
+        "start": 11.68,
+        "end": 12.353
+      }
+    ]
+  },
+  "discover": {
+    "duration": 8.127,
+    "words": [
+      {
+        "text": "A",
+        "start": 0,
+        "end": 0.093
+      },
+      {
+        "text": "participant",
+        "start": 0.209,
+        "end": 0.987
+      },
+      {
+        "text": "sees",
+        "start": 1.033,
+        "end": 1.231
+      },
+      {
+        "text": "it",
+        "start": 1.277,
+        "end": 1.347
+      },
+      {
+        "text": "picked",
+        "start": 1.382,
+        "end": 1.602
+      },
+      {
+        "text": "for",
+        "start": 1.625,
+        "end": 1.718
+      },
+      {
+        "text": "them,",
+        "start": 1.765,
+        "end": 2.078
+      },
+      {
+        "text": "with",
+        "start": 2.403,
+        "end": 2.577
+      },
+      {
+        "text": "the",
+        "start": 2.612,
+        "end": 2.682
+      },
+      {
+        "text": "reason",
+        "start": 2.752,
+        "end": 3.019
+      },
+      {
+        "text": "it",
+        "start": 3.065,
+        "end": 3.135
+      },
+      {
+        "text": "fits.",
+        "start": 3.193,
+        "end": 3.715
+      },
+      {
+        "text": "They",
+        "start": 4.226,
+        "end": 4.389
+      },
+      {
+        "text": "can",
+        "start": 4.412,
+        "end": 4.528
+      },
+      {
+        "text": "ask",
+        "start": 4.574,
+        "end": 4.748
+      },
+      {
+        "text": "the",
+        "start": 4.795,
+        "end": 4.865
+      },
+      {
+        "text": "event",
+        "start": 4.911,
+        "end": 5.155
+      },
+      {
+        "text": "anything,",
+        "start": 5.213,
+        "end": 5.793
+      },
+      {
+        "text": "and",
+        "start": 5.909,
+        "end": 6.06
+      },
+      {
+        "text": "get",
+        "start": 6.107,
+        "end": 6.235
+      },
+      {
+        "text": "answers",
+        "start": 6.281,
+        "end": 6.606
+      },
+      {
+        "text": "from",
+        "start": 6.641,
+        "end": 6.769
+      },
+      {
+        "text": "its",
+        "start": 6.815,
+        "end": 6.92
+      },
+      {
+        "text": "real",
+        "start": 7.012,
+        "end": 7.221
+      },
+      {
+        "text": "details.",
+        "start": 7.279,
+        "end": 8.127
+      }
+    ]
+  },
+  "rsvp": {
+    "duration": 4.923,
+    "words": [
+      {
+        "text": "To",
+        "start": 0,
+        "end": 0.186
+      },
+      {
+        "text": "RSVP,",
+        "start": 0.232,
+        "end": 0.94
+      },
+      {
+        "text": "they",
+        "start": 0.964,
+        "end": 1.068
+      },
+      {
+        "text": "put",
+        "start": 1.115,
+        "end": 1.254
+      },
+      {
+        "text": "down",
+        "start": 1.289,
+        "end": 1.44
+      },
+      {
+        "text": "a",
+        "start": 1.474,
+        "end": 1.498
+      },
+      {
+        "text": "small",
+        "start": 1.556,
+        "end": 1.811
+      },
+      {
+        "text": "stake.",
+        "start": 1.858,
+        "end": 2.334
+      },
+      {
+        "text": "The",
+        "start": 2.659,
+        "end": 2.775
+      },
+      {
+        "text": "contract",
+        "start": 2.833,
+        "end": 3.344
+      },
+      {
+        "text": "holds",
+        "start": 3.39,
+        "end": 3.634
+      },
+      {
+        "text": "it,",
+        "start": 3.68,
+        "end": 3.843
+      },
+      {
+        "text": "not",
+        "start": 3.913,
+        "end": 4.087
+      },
+      {
+        "text": "Ramai.",
+        "start": 4.145,
+        "end": 4.923
+      }
+    ]
+  },
+  "checkin": {
+    "duration": 11.935,
+    "words": [
+      {
+        "text": "On",
+        "start": 0,
+        "end": 0.163
+      },
+      {
+        "text": "the",
+        "start": 0.209,
+        "end": 0.279
+      },
+      {
+        "text": "day,",
+        "start": 0.337,
+        "end": 0.557
+      },
+      {
+        "text": "the",
+        "start": 0.58,
+        "end": 0.65
+      },
+      {
+        "text": "organizer",
+        "start": 0.72,
+        "end": 1.207
+      },
+      {
+        "text": "checks",
+        "start": 1.254,
+        "end": 1.509
+      },
+      {
+        "text": "them",
+        "start": 1.556,
+        "end": 1.683
+      },
+      {
+        "text": "in.",
+        "start": 1.753,
+        "end": 2.078
+      },
+      {
+        "text": "That",
+        "start": 2.461,
+        "end": 2.612
+      },
+      {
+        "text": "check-in",
+        "start": 2.647,
+        "end": 2.984
+      },
+      {
+        "text": "is",
+        "start": 3.042,
+        "end": 3.123
+      },
+      {
+        "text": "confirmed",
+        "start": 3.181,
+        "end": 3.622
+      },
+      {
+        "text": "on-chain,",
+        "start": 3.669,
+        "end": 4.331
+      },
+      {
+        "text": "where",
+        "start": 4.389,
+        "end": 4.598
+      },
+      {
+        "text": "anyone",
+        "start": 4.667,
+        "end": 5.004
+      },
+      {
+        "text": "can",
+        "start": 5.039,
+        "end": 5.143
+      },
+      {
+        "text": "verify",
+        "start": 5.19,
+        "end": 5.596
+      },
+      {
+        "text": "it.",
+        "start": 5.654,
+        "end": 5.84
+      },
+      {
+        "text": "Attendance",
+        "start": 6.223,
+        "end": 6.896
+      },
+      {
+        "text": "is",
+        "start": 6.931,
+        "end": 7.094
+      },
+      {
+        "text": "verified,",
+        "start": 7.175,
+        "end": 7.837
+      },
+      {
+        "text": "the",
+        "start": 7.918,
+        "end": 8.034
+      },
+      {
+        "text": "stake",
+        "start": 8.081,
+        "end": 8.336
+      },
+      {
+        "text": "comes",
+        "start": 8.371,
+        "end": 8.58
+      },
+      {
+        "text": "straight",
+        "start": 8.615,
+        "end": 8.951
+      },
+      {
+        "text": "back,",
+        "start": 8.998,
+        "end": 9.427
+      },
+      {
+        "text": "and",
+        "start": 9.752,
+        "end": 9.903
+      },
+      {
+        "text": "their",
+        "start": 9.95,
+        "end": 10.089
+      },
+      {
+        "text": "reputation",
+        "start": 10.159,
+        "end": 10.762
+      },
+      {
+        "text": "goes",
+        "start": 10.82,
+        "end": 10.995
+      },
+      {
+        "text": "up",
+        "start": 11.041,
+        "end": 11.134
+      },
+      {
+        "text": "by",
+        "start": 11.18,
+        "end": 11.296
+      },
+      {
+        "text": "one.",
+        "start": 11.378,
+        "end": 11.935
+      }
+    ]
+  },
+  "noshow": {
+    "duration": 5.201,
+    "words": [
+      {
+        "text": "And",
+        "start": 0,
+        "end": 0.163
+      },
+      {
+        "text": "if",
+        "start": 0.209,
+        "end": 0.279
+      },
+      {
+        "text": "they",
+        "start": 0.325,
+        "end": 0.441
+      },
+      {
+        "text": "skip",
+        "start": 0.499,
+        "end": 0.778
+      },
+      {
+        "text": "it?",
+        "start": 0.836,
+        "end": 1.068
+      },
+      {
+        "text": "After",
+        "start": 1.509,
+        "end": 1.8
+      },
+      {
+        "text": "the",
+        "start": 1.858,
+        "end": 1.927
+      },
+      {
+        "text": "deadline,",
+        "start": 1.985,
+        "end": 2.519
+      },
+      {
+        "text": "the",
+        "start": 2.543,
+        "end": 2.612
+      },
+      {
+        "text": "organizer",
+        "start": 2.67,
+        "end": 3.146
+      },
+      {
+        "text": "settles,",
+        "start": 3.204,
+        "end": 3.669
+      },
+      {
+        "text": "and",
+        "start": 3.704,
+        "end": 3.843
+      },
+      {
+        "text": "the",
+        "start": 3.889,
+        "end": 3.959
+      },
+      {
+        "text": "stake",
+        "start": 3.994,
+        "end": 4.238
+      },
+      {
+        "text": "is",
+        "start": 4.272,
+        "end": 4.331
+      },
+      {
+        "text": "forfeited.",
+        "start": 4.377,
+        "end": 5.201
+      }
+    ]
+  },
+  "closing": {
+    "duration": 6.687,
+    "words": [
+      {
+        "text": "Every",
+        "start": 0,
+        "end": 0.348
+      },
+      {
+        "text": "honest",
+        "start": 0.418,
+        "end": 0.743
+      },
+      {
+        "text": "check-in",
+        "start": 0.789,
+        "end": 1.219
+      },
+      {
+        "text": "makes",
+        "start": 1.289,
+        "end": 1.486
+      },
+      {
+        "text": "the",
+        "start": 1.533,
+        "end": 1.602
+      },
+      {
+        "text": "next",
+        "start": 1.66,
+        "end": 1.869
+      },
+      {
+        "text": "match",
+        "start": 1.939,
+        "end": 2.148
+      },
+      {
+        "text": "better.",
+        "start": 2.206,
+        "end": 2.601
+      },
+      {
+        "text": "Ramai.",
+        "start": 3.111,
+        "end": 3.762
+      },
+      {
+        "text": "Events",
+        "start": 4.087,
+        "end": 4.423
+      },
+      {
+        "text": "that",
+        "start": 4.458,
+        "end": 4.598
+      },
+      {
+        "text": "fill",
+        "start": 4.679,
+        "end": 4.911
+      },
+      {
+        "text": "up,",
+        "start": 4.992,
+        "end": 5.166
+      },
+      {
+        "text": "with",
+        "start": 5.19,
+        "end": 5.329
+      },
+      {
+        "text": "people",
+        "start": 5.364,
+        "end": 5.608
+      },
+      {
+        "text": "who",
+        "start": 5.631,
+        "end": 5.747
+      },
+      {
+        "text": "show",
+        "start": 5.805,
+        "end": 6.037
+      },
+      {
+        "text": "up.",
+        "start": 6.13,
+        "end": 6.687
+      }
+    ]
+  }
+}

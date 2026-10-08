@@ -191,3 +191,14 @@ If a clip goes wrong, record it again. For Clip B or D that means a new event or
 - It is **not gasless**. Wallets need tBNB.
 - It runs on **BSC Testnet**, not mainnet.
 - Reputation is an on-chain attendance **counter**, not a token.
+
+---
+
+## 8. Voice, subtitles and music
+
+- **Voice:** ElevenLabs, voice "Brian", generated per scene by `node scripts/voiceover.mjs`. The script text lives in that file. Output: `public/voiceover/*.mp3` and `src/voiceover.json` (word timings, used for the subtitles). Needs `ELEVENLABS_API_KEY` in `video/.env`.
+- **Subtitles:** built from the word timings and shown at the bottom of the frame (`src/lib/Narration.tsx`). Each sentence starts on the frame listed in `cues` in `src/Root.tsx`.
+- **Music:** "Instrumental Minimal" by The_Mountain, from Pixabay (Pixabay Content License). It is not stored in the repo. To render, download it from
+  https://pixabay.com/music/corporate-instrumental-minimal-522469/
+  and save it as `video/public/music/instrumental-minimal.mp3`. The music is lowered automatically while the voice is speaking.
+- **Footage:** raw recordings go in `video/public/` (not tracked). `bash scripts/cut.sh` trims and crops them into `public/cuts/`.
