@@ -23,6 +23,7 @@
   "scripts": {
     "dev": "remotion studio",
     "build": "remotion bundle",
+    "render:final": "remotion render RamaiDemo out/ramai-demo-raw.mp4 && ffmpeg -y -i out/ramai-demo-raw.mp4 -c:v copy -af loudnorm=I=-15:TP=-1.5:LRA=11 -ar 48000 -c:a aac -b:a 192k -movflags +faststart out/ramai-demo.mp4",
     "upgrade": "remotion upgrade",
     "lint": "eslint src && tsc"
   }

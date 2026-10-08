@@ -44,8 +44,8 @@ const SCENES: Scene[] = [
 const TOTAL = SCENES.reduce((n, s) => n + s.frames, 0);
 
 const MUSIC = "music/instrumental-minimal.mp3";
-const MUSIC_FULL = 0.34; // when nobody is speaking
-const MUSIC_DUCKED = 0.11; // under the voice
+const MUSIC_FULL = 0.62; // when nobody is speaking
+const MUSIC_DUCKED = 0.2; // under the voice
 const DUCK_RAMP = 10; // frames to duck / release
 
 /** Background music, lowered whenever a narration sentence is playing. */

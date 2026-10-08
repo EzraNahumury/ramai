@@ -202,3 +202,34 @@ If a clip goes wrong, record it again. For Clip B or D that means a new event or
   https://pixabay.com/music/corporate-instrumental-minimal-522469/
   and save it as `video/public/music/instrumental-minimal.mp3`. The music is lowered automatically while the voice is speaking.
 - **Footage:** raw recordings go in `video/public/` (not tracked). `bash scripts/cut.sh` trims and crops them into `public/cuts/`.
+
+---
+
+## 9. Setting up on another machine
+
+Needs Node 20+, pnpm and ffmpeg on the PATH.
+
+1. `cd video` then `pnpm install`.
+2. Download the music (link in section 8) and save it as `public/music/instrumental-minimal.mp3`. Without it the preview and the render fail on the missing file.
+3. `pnpm run dev` opens Remotion Studio. Pick **RamaiDemo** for the whole film, or one scene under **Scenes**.
+4. `pnpm run render:final` renders the film and normalises the loudness to about -15 LUFS. Output: `out/ramai-demo.mp4`. A plain `npx remotion render` gives a much quieter mix.
+
+The trimmed footage (`public/cuts/`) and the voice files (`public/voiceover/`) are in the repo, so steps 1 to 4 are enough to edit and render.
+
+Only needed for specific changes:
+- **Changing the narration:** edit the text in `scripts/voiceover.mjs`, put an `ELEVENLABS_API_KEY` in `video/.env`, run `node scripts/voiceover.mjs <scene>`. Then adjust that scene's `cues` in `src/Root.tsx` if the timing moved.
+- **Re-cutting footage:** needs the raw recordings in `public/` (not in the repo, about 270 MB). Ask whoever recorded them.
+
+Where things are:
+
+| To change | Edit |
+|---|---|
+| Scene order, voice cue frames, music volume | `src/Root.tsx` |
+| Text and timing of the animated scenes | `src/scenes/Hook.tsx`, `Intro.tsx`, `Onboarding.tsx`, `NoShow.tsx`, `Closing.tsx` |
+| Captions, icons and zooms on the recorded steps | `src/scenes/steps.ts` |
+| Browser frame and left rail layout | `src/scenes/Walkthrough.tsx` |
+| Subtitle look | `src/lib/Narration.tsx` |
+| Colours and fonts | `src/lib/theme.ts` |
+| Icons | `src/lib/icons.tsx` |
+
+Preview has no sound if Internet Download Manager is installed: it intercepts the audio files from `localhost`. Add `localhost` to IDM's exclusions or disable its browser extension.
