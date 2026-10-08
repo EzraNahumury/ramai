@@ -10,7 +10,7 @@ import {
   contractsConfigured,
   ramaiEventsAbi,
 } from "@/lib/contracts";
-import { toUnixSeconds } from "@/lib/format";
+import { toUnixSeconds, txErrorMessage } from "@/lib/format";
 
 export default function CreateEventPage() {
   const router = useRouter();
@@ -158,7 +158,7 @@ export default function CreateEventPage() {
 
       router.push(`/events/${eventId}`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
+      setError(txErrorMessage(err, "Something went wrong."));
     } finally {
       setBusy(false);
       setStatus("");

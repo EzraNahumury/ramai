@@ -11,7 +11,7 @@ import {
   contractsConfigured,
   ramaiEventsAbi,
 } from "@/lib/contracts";
-import { formatBNB } from "@/lib/format";
+import { formatBNB, txErrorMessage } from "@/lib/format";
 
 export default function OrganizerPage() {
   const { authenticated, login } = usePrivy();
@@ -79,7 +79,7 @@ function OrganizerEventCard({ ev, index }: { ev: EventRow; index: number }) {
         await publicClient?.waitForTransactionReceipt({ hash });
         setStatus("Done ✓");
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Transaction failed.");
+        setError(txErrorMessage(err));
         setStatus("");
       } finally {
         setBusy(false);

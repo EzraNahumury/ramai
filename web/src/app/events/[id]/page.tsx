@@ -11,7 +11,7 @@ import {
   contractsConfigured,
   ramaiEventsAbi,
 } from "@/lib/contracts";
-import { formatBNB, formatDateTime, shortAddr } from "@/lib/format";
+import { formatBNB, formatDateTime, shortAddr, txErrorMessage } from "@/lib/format";
 import { AttendanceDots } from "@/components/AttendanceDots";
 import { EventChat } from "@/components/EventChat";
 
@@ -84,7 +84,7 @@ export default function EventDetailPage() {
       await Promise.all([refetchEvent(), refetchRsvp()]);
       setStatus(done);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Transaction failed.");
+      setError(txErrorMessage(err));
       setStatus("");
     } finally {
       setBusy(false);
