@@ -1,12 +1,13 @@
 import React from "react";
 import { AbsoluteFill, Easing, interpolate, useCurrentFrame } from "remotion";
-import { colors } from "./theme";
+import { colors, display } from "./theme";
 
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
 export const EASE_OUT = Easing.bezier(0.16, 1, 0.3, 1);
 export const EASE_IN = Easing.in(Easing.cubic);
 export const EASE_POP = Easing.bezier(0.34, 1.56, 0.64, 1);
+export const EASE_IO = Easing.bezier(0.65, 0, 0.35, 1);
 
 /** 0→1 progress starting at `start`, lasting `duration` frames. */
 export const prog = (
@@ -47,15 +48,17 @@ export const Words: React.FC<{
   start: number;
   stagger?: number;
   accent?: string[];
+  /** Colours the whole line with the accent. */
+  allAccent?: boolean;
   style?: React.CSSProperties;
-}> = ({ text, start, stagger = 4, accent = [], style }) => {
+}> = ({ text, start, stagger = 4, accent = [], allAccent = false, style }) => {
   const frame = useCurrentFrame();
   const words = text.split(" ");
   return (
     <div style={{ display: "flex", flexWrap: "wrap", gap: "0 0.26em", ...style }}>
       {words.map((w, i) => {
         const p = prog(frame, start + i * stagger, 22);
-        const isAccent = accent.indexOf(w.replace(/[.,!?]/g, "")) >= 0;
+        const isAccent = allAccent || accent.indexOf(w.replace(/[.,!?]/g, "")) >= 0;
         return (
           <span
             key={i}
@@ -71,6 +74,34 @@ export const Words: React.FC<{
           </span>
         );
       })}
+    </div>
+  );
+};
+
+/** The film's headline: a plain line, then a second line in the accent. A few words each. */
+export const Headline: React.FC<{
+  a: string;
+  b: string;
+  start: number;
+  /** Frame the second line starts on; defaults to just after the first. */
+  startB?: number;
+  size?: number;
+  center?: boolean;
+  style?: React.CSSProperties;
+}> = ({ a, b, start, startB, size = 88, center = false, style }) => {
+  const line: React.CSSProperties = {
+    fontFamily: display,
+    fontWeight: 600,
+    fontSize: size,
+    lineHeight: 1.08,
+    letterSpacing: "-0.03em",
+    color: colors.ink,
+    justifyContent: center ? "center" : undefined,
+  };
+  return (
+    <div style={style}>
+      <Words text={a} start={start} style={line} />
+      <Words text={b} start={startB ?? start + 10} allAccent style={{ ...line, marginTop: size * 0.08 }} />
     </div>
   );
 };

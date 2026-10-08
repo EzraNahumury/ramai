@@ -226,10 +226,12 @@ Where things are:
 |---|---|
 | Scene order, voice cue frames, music volume | `src/Root.tsx` |
 | Text and timing of the animated scenes | `src/scenes/Hook.tsx`, `Intro.tsx`, `Onboarding.tsx`, `NoShow.tsx`, `Closing.tsx` |
-| Captions, icons and zooms on the recorded steps | `src/scenes/steps.ts` |
-| Browser frame and left rail layout | `src/scenes/Walkthrough.tsx` |
+| Headline, chip words, icons and zooms on the recorded steps | `src/scenes/steps.ts` |
+| Browser window, its tilt and the floating chips | `src/scenes/Walkthrough.tsx` |
 | Subtitle look | `src/lib/Narration.tsx` |
 | Colours and fonts | `src/lib/theme.ts` |
 | Icons | `src/lib/icons.tsx` |
+
+House rule for on-screen text: the narration and subtitles do the explaining. A scene gets one headline of a few words, and everything else is an icon, an animation or a chip of two or three words. Do not add sentences or paragraphs to the picture.
 
 Preview has no sound if Internet Download Manager is installed: it intercepts the audio files from `localhost`. Add `localhost` to IDM's exclusions or disable its browser extension.

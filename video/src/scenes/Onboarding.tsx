@@ -10,12 +10,11 @@ const EMAIL = "you@email.com";
 const INTERESTS = ["futsal", "casual sports", "beginners"];
 
 const Card: React.FC<{
-  index: number;
   start: number;
   icon: IconName;
   title: string;
   children: React.ReactNode;
-}> = ({ index, start, icon, title, children }) => {
+}> = ({ start, icon, title, children }) => {
   const frame = useCurrentFrame();
   const enter = prog(frame, start, 28);
   // The card being "performed" carries the accent until the next one starts.
@@ -24,7 +23,7 @@ const Card: React.FC<{
     <div
       style={{
         width: 520,
-        height: 452,
+        height: 372,
         boxSizing: "border-box",
         padding: "40px 42px",
         borderRadius: 32,
@@ -35,29 +34,27 @@ const Card: React.FC<{
         transform: `translateY(${(1 - enter) * 70 - active * 8}px)`,
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
         <IconBadge
           name={icon}
-          size={84}
+          size={108}
           bg={active > 0.5 ? colors.accent : colors.accentSoft}
           color={active > 0.5 ? "#fff" : colors.accent}
+          style={{ transform: `scale(${0.6 + 0.4 * prog(frame, start + 6, 18, EASE_POP)})` }}
         />
-        <span style={{ fontFamily: mono, fontSize: 26, color: colors.accent }}>0{index}</span>
+        <div
+          style={{
+            fontFamily: display,
+            fontWeight: 600,
+            fontSize: 56,
+            letterSpacing: "-0.02em",
+            color: colors.ink,
+          }}
+        >
+          {title}
+        </div>
       </div>
-      <div
-        style={{
-          fontFamily: display,
-          fontWeight: 600,
-          fontSize: 46,
-          lineHeight: 1.12,
-          letterSpacing: "-0.02em",
-          color: colors.ink,
-          marginTop: 30,
-        }}
-      >
-        {title}
-      </div>
-      <div style={{ marginTop: 26 }}>{children}</div>
+      <div style={{ marginTop: 44 }}>{children}</div>
     </div>
   );
 };
@@ -98,13 +95,13 @@ export const Onboarding: React.FC = () => {
       <Backdrop />
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
         <Words
-          text="No wallet setup. Just your email."
+          text="Just your email."
           start={4}
           accent={["email"]}
           style={{
             fontFamily: display,
             fontWeight: 600,
-            fontSize: 88,
+            fontSize: 96,
             letterSpacing: "-0.03em",
             color: colors.ink,
             justifyContent: "center",
@@ -112,7 +109,7 @@ export const Onboarding: React.FC = () => {
         />
 
         <div style={{ display: "flex", alignItems: "center", gap: 22, marginTop: 84 }}>
-          <Card index={1} start={36} icon="mail" title="Sign in with email">
+          <Card start={36} icon="mail" title="Email">
             <div style={field}>
               <Icon name="mail" size={28} color={colors.muted} />
               <span>
@@ -124,7 +121,7 @@ export const Onboarding: React.FC = () => {
 
           <Connector start={112} />
 
-          <Card index={2} start={122} icon="wallet" title="A wallet, made for you">
+          <Card start={122} icon="wallet" title="Wallet">
             <div
               style={{
                 ...field,
@@ -141,21 +138,22 @@ export const Onboarding: React.FC = () => {
                 display: "flex",
                 alignItems: "center",
                 gap: 10,
-                marginTop: 14,
+                marginTop: 18,
                 fontFamily: sans,
-                fontSize: 25,
+                fontWeight: 500,
+                fontSize: 27,
                 color: colors.muted,
                 opacity: noSeed,
               }}
             >
               <Icon name="lock" size={24} color={colors.success} />
-              No seed phrase to write down
+              No seed phrase
             </div>
           </Card>
 
           <Connector start={198} />
 
-          <Card index={3} start={208} icon="tag" title="Say what you’re into">
+          <Card start={208} icon="tag" title="Interests">
             <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
               {INTERESTS.map((t, i) => {
                 const p = prog(frame, 236 + i * 9, 14, EASE_POP);

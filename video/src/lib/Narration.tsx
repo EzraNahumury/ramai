@@ -2,7 +2,7 @@ import React from "react";
 import { AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import voiceover from "../voiceover.json";
 import { prog } from "./anim";
-import { sans } from "./theme";
+import { colors, sans } from "./theme";
 
 export type SceneId = keyof typeof voiceover;
 type Word = { text: string; start: number; end: number };
@@ -72,14 +72,15 @@ export const Narration: React.FC<{ id: SceneId; cues: number[] }> = ({ id, cues 
   const lines = layoutNarration(id, cues, fps);
 
   // Which phrase is being spoken right now?
-  let caption: string | null = null;
+  let caption: { text: string; at: number }[] | null = null;
   let shownAt = 0;
   for (const line of lines) {
+    const frameOf = (t: number) => line.from + Math.round((t - line.start) * fps);
     for (const phrase of phrasesOf(line.words)) {
-      const a = line.from + Math.round((phrase[0].start - line.start) * fps);
-      const b = line.from + Math.round((phrase[phrase.length - 1].end - line.start) * fps) + 8;
+      const a = frameOf(phrase[0].start);
+      const b = frameOf(phrase[phrase.length - 1].end) + 8;
       if (frame >= a && frame < b) {
-        caption = phrase.map((w) => w.text).join(" ");
+        caption = phrase.map((w) => ({ text: w.text, at: frameOf(w.start) }));
         shownAt = a;
       }
     }
@@ -100,25 +101,38 @@ export const Narration: React.FC<{ id: SceneId; cues: number[] }> = ({ id, cues 
 
       {caption && (
         <AbsoluteFill
-          style={{ justifyContent: "flex-end", alignItems: "center", paddingBottom: 44 }}
+          style={{ justifyContent: "flex-end", alignItems: "center", paddingBottom: 42 }}
         >
           <div
             style={{
-              padding: "14px 30px",
-              borderRadius: 16,
-              backgroundColor: "rgba(20,22,28,0.9)",
-              color: "#fff",
+              display: "flex",
+              gap: "0.28em",
+              padding: "11px 26px",
+              borderRadius: 999,
+              backgroundColor: "rgba(255,255,255,0.94)",
+              border: `2px solid ${colors.line}`,
               fontFamily: sans,
-              fontWeight: 500,
-              fontSize: 36,
+              fontWeight: 600,
+              fontSize: 30,
               lineHeight: 1.2,
-              letterSpacing: "0.005em",
               opacity: 0.4 + 0.6 * p,
               transform: `translateY(${(1 - p) * 8}px)`,
-              boxShadow: "0 12px 30px rgba(20,22,28,0.18)",
+              boxShadow: "0 10px 30px rgba(20,22,28,0.1)",
             }}
           >
-            {caption}
+            {/* Spoken words turn dark; the word being said takes the accent. */}
+            {caption.map((w, i) => {
+              const next = caption?.[i + 1];
+              const saying = frame >= w.at && (!next || frame < next.at);
+              return (
+                <span
+                  key={i}
+                  style={{ color: saying ? colors.accent : frame >= w.at ? colors.ink : "#a3aab6" }}
+                >
+                  {w.text}
+                </span>
+              );
+            })}
           </div>
         </AbsoluteFill>
       )}

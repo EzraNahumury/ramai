@@ -1,6 +1,7 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { Backdrop, Dot, EASE_POP, Words, prog } from "../lib/anim";
+import { Icon, IconBadge, IconName } from "../lib/icons";
 import { colors, display, mono, sans } from "../lib/theme";
 
 export const INTRO_DURATION = 450; // 15s
@@ -89,20 +90,20 @@ const Lockup: React.FC = () => {
 };
 
 type Pillar = {
-  k: string;
+  icon: IconName;
   title: string;
-  body: string;
   start: number;
   motif: (frame: number, start: number) => React.ReactNode;
 };
 
-const row: React.CSSProperties = { display: "flex", alignItems: "center", gap: 14, height: 56 };
+const row: React.CSSProperties = { display: "flex", alignItems: "center", gap: 16, height: 96 };
 
+// Each pillar is an icon, a tiny animation of the idea, and two or three words.
+// The narration carries the explanation.
 const PILLARS: Pillar[] = [
   {
-    k: "01",
-    title: "AI finds the right people",
-    body: "One sentence becomes a full event, matched to the people most likely to come — with the reason why.",
+    icon: "target",
+    title: "AI matching",
     start: 152,
     // Five people; AI picks out the two who fit.
     motif: (frame, start) => (
@@ -110,29 +111,27 @@ const PILLARS: Pillar[] = [
         {[0, 1, 2, 3, 4].map((i) => {
           const match = i === 1 || i === 3;
           const p = match ? prog(frame, start + 24 + i * 6, 14, EASE_POP) : 0;
-          return <Dot key={i} size={44} fill={p} />;
+          return <Dot key={i} size={64} fill={p} />;
         })}
       </div>
     ),
   },
   {
-    k: "02",
-    title: "A stake makes RSVP real",
-    body: "A small refundable deposit replaces the empty tap. Show up and it comes straight back.",
+    icon: "coin",
+    title: "Staked RSVP",
     start: 244,
     // Everyone who commits fills in, one after another.
     motif: (frame, start) => (
       <div style={row}>
         {[0, 1, 2, 3, 4].map((i) => (
-          <Dot key={i} size={44} fill={prog(frame, start + 22 + i * 6, 14, EASE_POP)} />
+          <Dot key={i} size={64} fill={prog(frame, start + 22 + i * 6, 14, EASE_POP)} />
         ))}
       </div>
     ),
   },
   {
-    k: "03",
-    title: "Showing up counts",
-    body: "Every verified check-in becomes on-chain reputation you own and carry to the next event.",
+    icon: "star",
+    title: "Reputation",
     start: 338,
     // Reputation ticks up with each check-in.
     motif: (frame, start) => {
@@ -148,18 +147,18 @@ const PILLARS: Pillar[] = [
             style={{
               display: "flex",
               alignItems: "center",
-              gap: 12,
-              padding: "8px 22px",
+              gap: 16,
+              padding: "12px 34px 12px 26px",
               borderRadius: 999,
               backgroundColor: "rgba(201,138,30,0.14)",
               color: colors.gold,
               fontFamily: sans,
               fontWeight: 600,
-              fontSize: 34,
+              fontSize: 58,
             }}
           >
-            <span>★</span>
-            <span style={{ minWidth: 22, textAlign: "center" }}>{n}</span>
+            <Icon name="star" size={54} color={colors.gold} strokeWidth={2.2} />
+            <span style={{ minWidth: 38, textAlign: "center" }}>{n}</span>
           </div>
         </div>
       );
@@ -176,23 +175,27 @@ const Pillars: React.FC = () => {
         justifyContent: "center",
         alignItems: "center",
         gap: 36,
-        paddingTop: 110,
+        paddingTop: 90,
       }}
     >
       {PILLARS.map((p, i) => {
         const enter = prog(frame, p.start, 28);
-        // The newest card carries the accent border until the next one arrives.
+        // The newest card carries the accent until the next one arrives.
         const next = PILLARS[i + 1]?.start ?? 440;
         const active = prog(frame, p.start, 12) - prog(frame, next, 16);
         return (
           <div
-            key={p.k}
+            key={p.title}
             style={{
               width: 520,
-              height: 500,
+              height: 470,
               boxSizing: "border-box",
-              padding: "42px 44px",
-              borderRadius: 32,
+              padding: "44px 40px",
+              borderRadius: 36,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "space-between",
               backgroundColor: colors.surface,
               border: `2px solid ${active > 0.5 ? colors.accent : colors.line}`,
               boxShadow: `0 ${20 + active * 20}px ${60 + active * 30}px rgba(20,22,28,${0.05 + active * 0.05})`,
@@ -200,33 +203,25 @@ const Pillars: React.FC = () => {
               transform: `translateY(${(1 - enter) * 80 - active * 10}px)`,
             }}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span style={{ fontFamily: mono, fontSize: 26, color: colors.accent }}>{p.k}</span>
-              {p.motif(frame, p.start)}
-            </div>
+            <IconBadge
+              name={p.icon}
+              size={116}
+              bg={active > 0.5 ? colors.accent : colors.accentSoft}
+              color={active > 0.5 ? "#fff" : colors.accent}
+              style={{ transform: `scale(${0.6 + 0.4 * prog(frame, p.start + 6, 18, EASE_POP)})` }}
+            />
+            {p.motif(frame, p.start)}
             <div
               style={{
                 fontFamily: display,
                 fontWeight: 600,
-                fontSize: 54,
+                fontSize: 56,
                 lineHeight: 1.1,
                 letterSpacing: "-0.02em",
                 color: colors.ink,
-                marginTop: 44,
               }}
             >
               {p.title}
-            </div>
-            <div
-              style={{
-                fontFamily: sans,
-                fontSize: 27,
-                lineHeight: 1.45,
-                color: colors.muted,
-                marginTop: 22,
-              }}
-            >
-              {p.body}
             </div>
           </div>
         );
@@ -239,33 +234,26 @@ const Footer: React.FC = () => {
   const frame = useCurrentFrame();
   const p = prog(frame, 404, 24);
   return (
-    <AbsoluteFill style={{ justifyContent: "flex-end", alignItems: "center", paddingBottom: 150 }}>
+    <AbsoluteFill style={{ justifyContent: "flex-end", alignItems: "center", paddingBottom: 140 }}>
       <div
         style={{
           display: "flex",
           alignItems: "center",
-          gap: 22,
+          gap: 12,
+          fontFamily: mono,
+          fontSize: 24,
+          letterSpacing: "0.06em",
+          color: colors.muted,
+          padding: "10px 22px 10px 16px",
+          borderRadius: 999,
+          border: `2px solid ${colors.line}`,
+          backgroundColor: colors.surface,
           opacity: p,
           transform: `translateY(${(1 - p) * 24}px)`,
         }}
       >
-        <span
-          style={{
-            fontFamily: mono,
-            fontSize: 24,
-            letterSpacing: "0.06em",
-            color: colors.muted,
-            padding: "10px 20px",
-            borderRadius: 999,
-            border: `2px solid ${colors.line}`,
-            backgroundColor: colors.surface,
-          }}
-        >
-          on BNB Smart Chain
-        </span>
-        <span style={{ fontFamily: sans, fontWeight: 600, fontSize: 34, color: colors.ink }}>
-          Here’s how it works →
-        </span>
+        <Icon name="chain" size={24} color={colors.muted} />
+        on BNB Smart Chain
       </div>
     </AbsoluteFill>
   );
