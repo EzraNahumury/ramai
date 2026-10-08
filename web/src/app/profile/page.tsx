@@ -59,8 +59,8 @@ export default function ProfilePage() {
 
   return (
     <main className="mx-auto w-full max-w-xl px-4 py-12">
-      <h1 className="font-display text-4xl font-semibold tracking-tight">Your interests</h1>
-      <p className="mt-2 text-sm text-muted">
+      <h1 className="fade-up font-display text-4xl font-semibold tracking-tight">Your interests</h1>
+      <p className="fade-up mt-2 text-sm text-muted" style={{ animationDelay: "0.06s" }}>
         Tell Ramai what you&apos;re into — it uses this to find events that actually fit.
       </p>
 
@@ -69,7 +69,10 @@ export default function ProfilePage() {
           Sign in
         </button>
       ) : (
-        <div className="card mt-8 flex flex-col gap-5 p-6 sm:p-8">
+        <div
+          className="card fade-up mt-8 flex flex-col gap-5 p-6 sm:p-8"
+          style={{ animationDelay: "0.12s" }}
+        >
           <label className="flex flex-col gap-1.5">
             <span className="text-sm font-medium">Display name</span>
             <input

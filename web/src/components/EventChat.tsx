@@ -41,7 +41,7 @@ export function EventChat({ eventId }: { eventId: string }) {
   }
 
   return (
-    <div className="card mt-5 p-5">
+    <div className="card fade-up mt-5 p-5" style={{ animationDelay: "0.24s" }}>
       <div className="flex items-center gap-2">
         <span className="dot dot-on" />
         <h2 className="font-display text-lg font-bold">Ask about this event</h2>

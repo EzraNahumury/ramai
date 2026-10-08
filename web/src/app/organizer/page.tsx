@@ -31,8 +31,10 @@ export default function OrganizerPage() {
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-10">
-      <h1 className="font-display text-4xl font-semibold tracking-tight">Organizer</h1>
-      <p className="mt-2 text-sm text-muted">Check in attendees and settle no-shows.</p>
+      <h1 className="fade-up font-display text-4xl font-semibold tracking-tight">Organizer</h1>
+      <p className="fade-up mt-2 text-sm text-muted" style={{ animationDelay: "0.06s" }}>
+        Check in attendees and settle no-shows.
+      </p>
 
       {!authenticated ? (
         <button onClick={login} className="btn btn-primary btn-md mt-6">
@@ -41,7 +43,7 @@ export default function OrganizerPage() {
       ) : loading ? (
         <p className="mt-8 text-sm text-muted">Loading…</p>
       ) : events.length === 0 ? (
-        <div className="mt-8 rounded-2xl border border-dashed border-line p-10 text-center">
+        <div className="fade-up mt-8 rounded-2xl border border-dashed border-line p-10 text-center">
           <p className="font-display font-bold">No events yet</p>
           <Link href="/create" className="mt-2 inline-block text-sm font-semibold text-accent">
             Host your first event
@@ -49,8 +51,8 @@ export default function OrganizerPage() {
         </div>
       ) : (
         <div className="mt-8 flex flex-col gap-4">
-          {events.map((ev) => (
-            <OrganizerEventCard key={ev.onchain_id} ev={ev} />
+          {events.map((ev, i) => (
+            <OrganizerEventCard key={ev.onchain_id} ev={ev} index={i} />
           ))}
         </div>
       )}
@@ -58,7 +60,7 @@ export default function OrganizerPage() {
   );
 }
 
-function OrganizerEventCard({ ev }: { ev: EventRow }) {
+function OrganizerEventCard({ ev, index }: { ev: EventRow; index: number }) {
   const publicClient = usePublicClient();
   const { writeContractAsync } = useWriteContract();
   const [attendee, setAttendee] = useState("");
@@ -120,7 +122,10 @@ function OrganizerEventCard({ ev }: { ev: EventRow }) {
   };
 
   return (
-    <div className="card p-6">
+    <div
+      className="card fade-up p-6"
+      style={{ animationDelay: `${0.12 + Math.min(index, 8) * 0.06}s` }}
+    >
       <div className="flex items-center justify-between gap-3">
         <Link href={`/events/${ev.onchain_id}`} className="font-display text-lg font-semibold hover:text-accent">
           {ev.title}

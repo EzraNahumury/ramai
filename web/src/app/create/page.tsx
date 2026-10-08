@@ -167,12 +167,16 @@ export default function CreateEventPage() {
 
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-12">
-      <h1 className="font-display text-4xl font-semibold tracking-tight">Host an event</h1>
-      <p className="mt-2 text-sm text-muted">
+      <h1 className="fade-up font-display text-4xl font-semibold tracking-tight">Host an event</h1>
+      <p className="fade-up mt-2 text-sm text-muted" style={{ animationDelay: "0.06s" }}>
         Details stay off-chain. Only the commitment rules go on-chain.
       </p>
 
-      <form onSubmit={handleSubmit} className="card mt-8 p-6 sm:p-8">
+      <form
+        onSubmit={handleSubmit}
+        className="card fade-up mt-8 p-6 sm:p-8"
+        style={{ animationDelay: "0.12s" }}
+      >
         {/* AI drafter */}
         <div className="rounded-xl border border-accent/25 bg-accent-soft p-4">
           <div className="flex items-center gap-2">

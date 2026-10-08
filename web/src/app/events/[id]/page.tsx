@@ -136,15 +136,18 @@ export default function EventDetailPage() {
       <Link href="/events" className="mono text-xs text-muted transition-colors hover:text-ink">
         ← Discover
       </Link>
-      <div className="mt-4">{meta?.category && <span className="chip">{meta.category}</span>}</div>
-      <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
+      <div className="fade-up mt-4">{meta?.category && <span className="chip">{meta.category}</span>}</div>
+      <h1
+        className="fade-up mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl"
+        style={{ animationDelay: "0.05s" }}
+      >
         {meta?.title ?? `Event #${params.id}`}
       </h1>
       {meta?.description && (
         <p className="mt-4 whitespace-pre-line leading-7 text-muted">{meta.description}</p>
       )}
 
-      <div className="card mt-6 p-5">
+      <div className="card fade-up mt-6 p-5" style={{ animationDelay: "0.12s" }}>
         <div className="grid grid-cols-2 gap-5 text-sm">
           <Info label="Location" value={meta?.location ?? "—"} />
           <Info label="Starts" value={formatDateTime(ev?.startTime)} />
@@ -163,7 +166,7 @@ export default function EventDetailPage() {
         </div>
       </div>
 
-      <div className="card mt-5 p-5">
+      <div className="card fade-up mt-5 p-5" style={{ animationDelay: "0.18s" }}>
         {!contractsConfigured ? (
           <p className="text-sm text-accent">
             Contracts not connected. Deploy and set NEXT_PUBLIC_RAMAI_EVENTS_ADDRESS.

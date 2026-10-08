@@ -192,13 +192,13 @@ h1, h2, h3 {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
 }
+/* No `to` frame: the element settles on its own styles, so hover transforms still work. */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 .node-pulse { animation: nodePulse 3.2s ease-in-out infinite; }
 .float-slow { animation: floatY 9s ease-in-out infinite; }
-.fade-up { animation: fadeUp 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.fade-up { animation: fadeUp 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; }
 
 @media (prefers-reduced-motion: reduce) {
   * {

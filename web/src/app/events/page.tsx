@@ -41,7 +41,7 @@ export default function EventsPage() {
 
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-10">
-      <div className="flex flex-wrap items-end justify-between gap-4">
+      <div className="fade-up flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-4xl font-semibold tracking-tight">
             {personalized ? "Picked for you" : "Discover events"}
@@ -58,7 +58,7 @@ export default function EventsPage() {
       </div>
 
       {!personalized && configured && !loading && (
-        <div className="mt-5 rounded-xl border border-line bg-surface-2 px-4 py-3 text-sm text-muted">
+        <div className="fade-up mt-5 rounded-xl border border-line bg-surface-2 px-4 py-3 text-sm text-muted">
           Add your interests for matches picked and explained for you —{" "}
           <Link href="/profile" className="font-semibold text-accent">
             set interests
@@ -85,11 +85,12 @@ export default function EventsPage() {
         </Empty>
       ) : (
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {events.map((ev) => (
+          {events.map((ev, i) => (
             <Link
               key={ev.onchain_id}
               href={`/events/${ev.onchain_id}`}
-              className="card group flex flex-col p-5 transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_8px_30px_rgba(20,22,28,0.06)]"
+              className="card fade-up group flex flex-col p-5 transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_8px_30px_rgba(20,22,28,0.06)]"
+              style={{ animationDelay: `${Math.min(i, 8) * 0.06}s` }}
             >
               <div className="flex items-center justify-between gap-2">
                 {ev.category ? <span className="chip">{ev.category}</span> : <span />}
@@ -130,7 +131,7 @@ function Empty({
   children?: React.ReactNode;
 }) {
   return (
-    <div className="mt-10 flex flex-col items-center rounded-2xl border border-dashed border-line p-12 text-center">
+    <div className="fade-up mt-10 flex flex-col items-center rounded-2xl border border-dashed border-line p-12 text-center">
       <div className="mb-4 flex gap-1.5" aria-hidden>
         <span className="dot dot-on" />
         <span className="dot dot-off" />
